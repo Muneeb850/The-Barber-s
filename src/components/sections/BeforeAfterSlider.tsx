@@ -2,7 +2,7 @@
  * BeforeAfterSlider
  *
  * A premium drag/touch-enabled image comparison slider.
- * Drag the divider line to reveal the "After" image over the "Before" image.
+ * Drag the divider line to reveal the "After" image (or video) over the "Before" image.
  */
 import { motion, useMotionValue, useTransform, animate, useReducedMotion } from "framer-motion";
 import { useRef, useCallback } from "react";
@@ -10,6 +10,8 @@ import { useRef, useCallback } from "react";
 interface Props {
   beforeSrc: string;
   afterSrc: string;
+  /** Optional video to play in the After panel (afterSrc used as poster) */
+  afterVideoSrc?: string;
   beforeAlt?: string;
   afterAlt?: string;
   /** Initial position of the divider as a fraction 0–1. Default: 0.5 */
@@ -22,6 +24,7 @@ const LUXURY_EASE = [0.22, 0.61, 0.36, 1] as const;
 export function BeforeAfterSlider({
   beforeSrc,
   afterSrc,
+  afterVideoSrc,
   beforeAlt = "Before",
   afterAlt = "After",
   initialPosition = 0.5,
@@ -113,14 +116,27 @@ export function BeforeAfterSlider({
         style={{ clipPath: useTransform(clipX, (x) => `inset(0 ${100 - parseFloat(x)}% 0 0)`) }}
         aria-hidden="true"
       >
-        <img
-          src={afterSrc}
-          alt={afterAlt}
-          className="h-full w-full object-cover select-none pointer-events-none"
-          style={{ aspectRatio: "16/9" }}
-          draggable={false}
-          loading="lazy"
-        />
+        {afterVideoSrc ? (
+          <video
+            src={afterVideoSrc}
+            poster={afterSrc}
+            className="h-full w-full object-cover select-none pointer-events-none"
+            style={{ aspectRatio: "16/9" }}
+            autoPlay
+            loop
+            muted
+            playsInline
+          />
+        ) : (
+          <img
+            src={afterSrc}
+            alt={afterAlt}
+            className="h-full w-full object-cover select-none pointer-events-none"
+            style={{ aspectRatio: "16/9" }}
+            draggable={false}
+            loading="lazy"
+          />
+        )}
         {/* After label */}
         <span className="absolute bottom-4 left-4 rounded-full border border-gold/60 bg-espresso/80 px-3 py-1 text-[0.65rem] tracking-[0.25em] text-gold uppercase backdrop-blur-sm font-medium">
           After

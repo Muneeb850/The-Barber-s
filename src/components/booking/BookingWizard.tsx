@@ -10,7 +10,9 @@ import {
   ExternalLink,
   Loader2,
   MapPin,
+  Shield,
   Sparkles,
+  Star,
   User,
 } from "lucide-react";
 import { type ReactNode, useEffect, useMemo, useRef, useState } from "react";
@@ -35,6 +37,9 @@ const STEPS = [
 ] as const;
 
 type Details = { name: string; phone: string; email: string; notes: string };
+
+const DISCOUNT_AMOUNT = 3;
+type DiscountType = null | "military" | "senior";
 
 const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 const phoneRe = /^[0-9+()\-.\s]{7,25}$/;
@@ -65,6 +70,7 @@ export function BookingWizard() {
   const [time, setTime] = useState<string | null>(null);
   const [details, setDetails] = useState<Details>({ name: "", phone: "", email: "", notes: "" });
   const [errors, setErrors] = useState<Partial<Record<keyof Details, string>>>({});
+  const [discountType, setDiscountType] = useState<DiscountType>(null);
   const [taken, setTaken] = useState<{ barberId: string; time: string }[]>([]);
   const [submitting, setSubmitting] = useState(false);
   const [reference, setReference] = useState<string | null>(null);
@@ -139,9 +145,14 @@ export function BookingWizard() {
     setTime(null);
     setDetails({ name: "", phone: "", email: "", notes: "" });
     setErrors({});
+    setDiscountType(null);
     setReference(null);
     setCopied(false);
   }
+
+  const discountAmount = discountType ? DISCOUNT_AMOUNT : 0;
+  const originalPrice = service?.price ?? 0;
+  const finalPrice = Math.max(0, originalPrice - discountAmount);
 
   function validateDetails() {
     const next: Partial<Record<keyof Details, string>> = {};
@@ -526,6 +537,62 @@ export function BookingWizard() {
                       className="bg-card border-border resize-none"
                     />
                   </Field>
+
+                  {/* Discount selector */}
+                  <div>
+                    <p className="eyebrow mb-2">Discount Eligibility</p>
+                    <div className="grid gap-2 sm:grid-cols-2">
+                      <button
+                        type="button"
+                        onClick={() => setDiscountType(discountType === "military" ? null : "military")}
+                        className={cn(
+                          "flex items-center gap-3 rounded-xl border p-3 text-left transition-all duration-200 cursor-pointer",
+                          discountType === "military"
+                            ? "border-gold bg-gold/10 ring-1 ring-gold/50"
+                            : "border-border hover:border-foreground/40 hover:bg-secondary/40",
+                        )}
+                      >
+                        <span className="flex size-9 shrink-0 items-center justify-center rounded-full border border-gold/50 bg-gold/10">
+                          <Shield className="size-4 text-gold" />
+                        </span>
+                        <div className="min-w-0">
+                          <p className="font-serif text-sm font-semibold">Military Personnel</p>
+                          <p className="text-xs text-muted-foreground"><span className="text-gold font-semibold">$3 off</span> · valid ID required</p>
+                        </div>
+                        {discountType === "military" && (
+                          <span className="ml-auto grid size-5 place-items-center rounded-full bg-gold text-background">
+                            <Check className="size-3" />
+                          </span>
+                        )}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setDiscountType(discountType === "senior" ? null : "senior")}
+                        className={cn(
+                          "flex items-center gap-3 rounded-xl border p-3 text-left transition-all duration-200 cursor-pointer",
+                          discountType === "senior"
+                            ? "border-gold bg-gold/10 ring-1 ring-gold/50"
+                            : "border-border hover:border-foreground/40 hover:bg-secondary/40",
+                        )}
+                      >
+                        <span className="flex size-9 shrink-0 items-center justify-center rounded-full border border-gold/50 bg-gold/10">
+                          <Star className="size-4 text-gold" />
+                        </span>
+                        <div className="min-w-0">
+                          <p className="font-serif text-sm font-semibold">Senior Citizen</p>
+                          <p className="text-xs text-muted-foreground"><span className="text-gold font-semibold">$3 off</span> · 65 years &amp; older</p>
+                        </div>
+                        {discountType === "senior" && (
+                          <span className="ml-auto grid size-5 place-items-center rounded-full bg-gold text-background">
+                            <Check className="size-3" />
+                          </span>
+                        )}
+                      </button>
+                    </div>
+                    {discountType && (
+                      <p className="mt-2 text-xs text-muted-foreground">Discount will be applied at the chair upon showing valid ID.</p>
+                    )}
+                  </div>
                 </div>
               ) : null}
 
@@ -542,7 +609,11 @@ export function BookingWizard() {
                     />
                     <Row
                       label="Service"
-                      value={`${service?.name} · $${service?.price} (${service?.duration} min)`}
+                      value={
+                        discountType
+                          ? `${service?.name} · $${originalPrice} → $${finalPrice} (${service?.duration} min)`
+                          : `${service?.name} · $${originalPrice} (${service?.duration} min)`
+                      }
                       onEdit={() => go(0)}
                     />
                     <Row label="Barber" value={barber?.name ?? ""} onEdit={() => go(1)} />
@@ -559,7 +630,20 @@ export function BookingWizard() {
                     {details.notes ? (
                       <Row label="Notes" value={details.notes} onEdit={() => go(3)} />
                     ) : null}
+                    {discountType && (
+                      <Row
+                        label="Discount Applied"
+                        value={`${discountType === "military" ? "Military Personnel" : "Senior Citizen"} — $${DISCOUNT_AMOUNT} off`}
+                        onEdit={() => go(3)}
+                      />
+                    )}
                   </div>
+                  {discountType && (
+                    <div className="flex items-center justify-between rounded-lg border border-gold/40 bg-gold/5 px-4 py-2.5 text-sm">
+                      <span className="text-muted-foreground">Total (after discount)</span>
+                      <span className="font-serif text-lg font-bold text-gold">${finalPrice}</span>
+                    </div>
+                  )}
                   <p className="flex items-center gap-2 pt-2 text-xs text-muted-foreground">
                     <Clock className="size-3.5 text-gold shrink-0" aria-hidden="true" />
                     Please arrive 5 minutes prior to your appointment time.
@@ -628,9 +712,33 @@ export function BookingWizard() {
                         <Clock className="size-3.5 text-gold" /> Service
                       </span>
                       <span className="font-medium text-foreground">
-                        {service?.name} (${service?.price})
+                        {service?.name}
                       </span>
                     </div>
+                    <div className="flex items-center justify-between border-b border-border/50 pb-2">
+                      <span className="text-muted-foreground flex items-center gap-1.5">
+                        Price
+                      </span>
+                      <div className="text-right">
+                        {discountType ? (
+                          <>
+                            <span className="line-through text-muted-foreground/60 text-[0.7rem] mr-1.5">${originalPrice}</span>
+                            <span className="font-bold text-gold">${finalPrice}</span>
+                          </>
+                        ) : (
+                          <span className="font-medium text-foreground">${originalPrice}</span>
+                        )}
+                      </div>
+                    </div>
+                    {discountType && (
+                      <div className="flex items-center justify-between border-b border-border/50 pb-2">
+                        <span className="text-muted-foreground flex items-center gap-1.5">
+                          {discountType === "military" ? <Shield className="size-3.5 text-gold" /> : <Star className="size-3.5 text-gold" />}
+                          Discount
+                        </span>
+                        <span className="font-medium text-green-500">− $3 ({discountType === "military" ? "Military" : "Senior"})</span>
+                      </div>
+                    )}
                     <div className="flex items-center justify-between">
                       <span className="text-muted-foreground flex items-center gap-1.5">
                         <CalendarIcon className="size-3.5 text-gold" /> Time

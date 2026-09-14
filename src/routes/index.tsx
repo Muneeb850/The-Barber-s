@@ -12,6 +12,9 @@ import { SERVICES, BUSINESS, LOCATIONS } from "@/lib/site-data";
 import realInterior from "@/assets/real-interior.jpg";
 import realBackCut from "@/assets/real-back-cut.jpg";
 import beforeHaircut from "@/assets/before-haircut.png";
+import afterHaircut from "@/assets/after-haircut.png";
+import barbersShowcaseVideo from "@/assets/barbers-showcase.mp4";
+import barberCuttingVideo from "@/assets/barber-cutting.mp4";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -178,9 +181,10 @@ function Index() {
           <Reveal delay={0.15} className="mt-10">
             <BeforeAfterSlider
               beforeSrc={beforeHaircut}
-              afterSrc={realBackCut}
+              afterSrc={afterHaircut}
+              afterVideoSrc={barberCuttingVideo}
               beforeAlt="Overgrown hair — before visit to The Barbers"
-              afterAlt="Precision taper cut — after The Barbers Honolulu"
+              afterAlt="Sharp fade haircut — after The Barbers Honolulu"
             />
           </Reveal>
         </div>
@@ -188,6 +192,85 @@ function Index() {
 
       <Testimonials />
       <InstagramStrip />
+
+      {/* ── WhatsApp Showcase Video ──────────────────────────── */}
+      <section className="py-24 md:py-32 overflow-hidden">
+        <div className="mx-auto max-w-7xl px-5 md:px-8">
+          <div className="grid items-center gap-14 md:grid-cols-2">
+
+            {/* Left — copy */}
+            <Reveal variant="slide-left">
+              <p className="eyebrow text-gold">In the Shop</p>
+              <h2 className="mt-4 font-serif text-3xl leading-tight sm:text-4xl md:text-5xl">
+                The craft,<br />
+                <span className="italic">unfiltered</span>
+              </h2>
+              <div className="rule-gold mt-6 max-w-24" aria-hidden="true" />
+              <p className="mt-6 text-base leading-relaxed text-muted-foreground">
+                Real moments from our chairs — the precision, the ritual, the finish.
+                This is what it looks like when a barber takes their time.
+              </p>
+              <ul className="mt-8 grid grid-cols-2 gap-4">
+                {[
+                  { stat: "8+", label: "Years of craft" },
+                  { stat: "4.9★", label: "Average rating" },
+                  { stat: "100%", label: "Consultation first" },
+                  { stat: "0", label: "Rushed cuts" },
+                ].map((item) => (
+                  <li key={item.label} className="lux-card rounded-sm p-4">
+                    <p className="font-serif text-2xl text-gold">{item.stat}</p>
+                    <p className="mt-1 text-xs tracking-[0.18em] uppercase text-muted-foreground font-medium">{item.label}</p>
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-8">
+                <GoldButton onClick={() => openBooking()}>Book Your Chair</GoldButton>
+              </div>
+            </Reveal>
+
+            {/* Right — phone mockup */}
+            <Reveal variant="slide-right" delay={0.15} className="flex justify-center">
+              {/* Phone outer shell */}
+              <div className="relative w-[260px] sm:w-[300px]">
+                {/* Phone body */}
+                <div className="relative rounded-[2.8rem] border-[7px] border-foreground/80 bg-black shadow-[0_32px_80px_-12px_rgba(0,0,0,0.55),0_0_0_1px_oklch(0.72_0.098_76/0.3)] overflow-hidden">
+                  {/* Notch */}
+                  <div className="absolute top-0 left-1/2 -translate-x-1/2 z-10 w-28 h-6 bg-foreground/80 rounded-b-2xl flex items-center justify-center gap-2">
+                    <div className="size-2 rounded-full bg-background/30" />
+                    <div className="size-3 rounded-full bg-background/20 border border-background/40" />
+                  </div>
+                  {/* Screen */}
+                  <div className="relative overflow-hidden" style={{ aspectRatio: "9/19.5" }}>
+                    <video
+                      src={barbersShowcaseVideo}
+                      className="absolute inset-0 w-full h-full object-cover"
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      preload="auto"
+                    />
+                    {/* Status bar overlay */}
+                    <div className="absolute top-0 inset-x-0 h-8 bg-gradient-to-b from-black/60 to-transparent z-10" />
+                    {/* Bottom home indicator */}
+                    <div className="absolute bottom-2 inset-x-0 flex justify-center z-10">
+                      <div className="w-24 h-1 rounded-full bg-white/50" />
+                    </div>
+                  </div>
+                </div>
+                {/* Side buttons */}
+                <div className="absolute -left-[9px] top-24 w-[7px] h-8 rounded-l-sm bg-foreground/70" aria-hidden="true" />
+                <div className="absolute -left-[9px] top-36 w-[7px] h-12 rounded-l-sm bg-foreground/70" aria-hidden="true" />
+                <div className="absolute -left-[9px] top-52 w-[7px] h-12 rounded-l-sm bg-foreground/70" aria-hidden="true" />
+                <div className="absolute -right-[9px] top-36 w-[7px] h-16 rounded-r-sm bg-foreground/70" aria-hidden="true" />
+                {/* Gold glow beneath phone */}
+                <div className="pointer-events-none absolute -bottom-8 left-1/2 -translate-x-1/2 w-48 h-16 rounded-full bg-gold/20 blur-2xl" aria-hidden="true" />
+              </div>
+            </Reveal>
+
+          </div>
+        </div>
+      </section>
 
       {/* Hours + CTA */}
       <section className="surface-linen border-y border-border py-24 md:py-32 overflow-hidden">

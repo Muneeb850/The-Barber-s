@@ -3,7 +3,7 @@ import { PageHeader } from "@/components/PageHeader";
 import { Reveal, SectionHeading, ImageMaskReveal } from "@/components/Reveal";
 import { BUSINESS } from "@/lib/site-data";
 import realInterior from "@/assets/real-interior.jpg";
-import realExterior from "@/assets/real-exterior.jpg";
+import realFadeCut from "@/assets/real-fade-cut.jpg";
 import realLadiesService from "@/assets/real-ladies-service.jpg";
 
 export const Route = createFileRoute("/about")({
@@ -116,8 +116,8 @@ function About() {
           <SectionHeading eyebrow="Inside the lounge" title="Comfort, style and precision" />
           <div className="mt-14 grid gap-6 md:grid-cols-2">
             <ImageMaskReveal
-              src={realExterior}
-              alt="The Barbers — exterior of our Kona Street location in Honolulu"
+              src={realFadeCut}
+              alt="Curly skin fade — fresh from the chair at The Barbers Honolulu"
               width={1200}
               height={900}
               delay={0.1}

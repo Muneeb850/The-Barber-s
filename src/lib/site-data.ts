@@ -243,9 +243,9 @@ export const GALLERY = [
   { src: realInterior, alt: "The Barbers lounge — barbers at work on multiple chairs", span: "wide" },
   { src: realBackCut, alt: "Precision taper cut — back view at The Barbers", span: "tall" },
   { src: realLadiesService, alt: "Ladies styling service — expert curling iron finish", span: "wide" },
-  { src: realExterior, alt: "The Barbers — Kona Street location, Honolulu", span: "tall" },
   { src: realInterior2, alt: "It's a good hair day — inside The Barbers lounge", span: "tall" },
   { src: realFadeCut2, alt: "Clean skin fade — precision neckline at The Barbers", span: "tall" },
+  { src: realExterior, alt: "The Barbers — Kona Street location, Honolulu", span: "tall" },
 ] as const;
 
 export { realInterior, realExterior, realBackCut, realFadeCut, realLadiesService };
