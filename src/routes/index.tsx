@@ -14,7 +14,6 @@ import realBackCut from "@/assets/real-back-cut.jpg";
 import beforeHaircut from "@/assets/before-haircut.png";
 import afterHaircut from "@/assets/after-haircut.png";
 import barbersShowcaseVideo from "@/assets/barbers-showcase.mp4";
-import barberCuttingVideo from "@/assets/barber-cutting.mp4";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -182,7 +181,6 @@ function Index() {
             <BeforeAfterSlider
               beforeSrc={beforeHaircut}
               afterSrc={afterHaircut}
-              afterVideoSrc={barberCuttingVideo}
               beforeAlt="Overgrown hair — before visit to The Barbers"
               afterAlt="Sharp fade haircut — after The Barbers Honolulu"
             />

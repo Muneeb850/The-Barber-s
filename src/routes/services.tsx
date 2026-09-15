@@ -90,10 +90,10 @@ function Services() {
                 delay={(i % 2) * 0.08}
                 className="lux-card lux-card-hover flex flex-col p-8 rounded-sm gold-glow-hover"
               >
-                {s.tag ? (
+                {(s.tag || s.subtitle) ? (
                   <div className="flex flex-wrap gap-2 mb-4">
                     <span className="inline-flex w-fit border border-gold/50 px-3 py-1 text-[0.6rem] tracking-[0.24em] text-gold uppercase font-medium">
-                      {s.tag}
+                      {s.tag || s.subtitle}
                     </span>
                   </div>
                 ) : null}

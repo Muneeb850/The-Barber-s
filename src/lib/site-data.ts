@@ -10,11 +10,13 @@ import realBackCut from "@/assets/real-back-cut.jpg";
 import realInterior from "@/assets/real-interior.jpg";
 import realInterior2 from "@/assets/real-interior-2.jpg";
 import realFadeCut2 from "@/assets/real-fade-cut-2.jpg";
+import realHaircutAction from "@/assets/real-haircut-action.jpg";
+import realShopExterior from "@/assets/real-shop-exterior.jpg";
 
 export const BUSINESS = {
   name: "The Barbers",
   tagline: "The Art of the Modern Gentleman",
-  email: "hello@thebarbershonolulu.com",
+  email: "thetxtbarbersone@gmail.com",
   phone: "(808) 949-6081",
   phoneHref: "tel:+18089496081",
   socials: [
@@ -70,6 +72,7 @@ export type Service = {
   duration: number;
   category: "men" | "ladies";
   subtitle?: string;
+  tag?: string;
 };
 
 export const SERVICES: Service[] = [
@@ -245,10 +248,11 @@ export const GALLERY = [
   { src: realLadiesService, alt: "Ladies styling service — expert curling iron finish", span: "wide" },
   { src: realInterior2, alt: "It's a good hair day — inside The Barbers lounge", span: "tall" },
   { src: realFadeCut2, alt: "Clean skin fade — precision neckline at The Barbers", span: "tall" },
-  { src: realExterior, alt: "The Barbers — Kona Street location, Honolulu", span: "tall" },
+  { src: realHaircutAction, alt: "Master barber haircut — precision styling at The Barbers", span: "tall" },
+  { src: realShopExterior, alt: "The Barbers shop building & entrance on Kona Street, Honolulu", span: "wide" },
 ] as const;
 
-export { realInterior, realExterior, realBackCut, realFadeCut, realLadiesService };
+export { realInterior, realExterior, realBackCut, realFadeCut, realLadiesService, realHaircutAction, realShopExterior };
 
 export const TESTIMONIALS = [
   {
