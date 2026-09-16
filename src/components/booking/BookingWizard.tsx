@@ -283,7 +283,7 @@ export function BookingWizard() {
         <div className="border-b border-border surface-linen px-6 py-5 sticky top-0 z-20 backdrop-blur-md bg-card/95">
           <div className="flex items-center justify-between">
             <DialogTitle className="font-serif text-2xl font-normal">
-              {step === 5 ? "Booking Confirmed" : "Book your chair"}
+              {step === 5 ? "Booking Confirmed" : "Book Appointment"}
             </DialogTitle>
             {step < 5 ? (
               <span className="text-[0.65rem] tracking-[0.2em] uppercase font-medium text-gold bg-gold/10 px-2.5 py-1 rounded-full">
@@ -663,7 +663,7 @@ export function BookingWizard() {
                   </motion.div>
 
                   <h3 className="mt-4 font-serif text-2xl font-bold text-foreground">
-                    Your Chair is Reserved!
+                    Your Appointment is Reserved!
                   </h3>
                   <p className="mt-1.5 text-sm text-muted-foreground max-w-md mx-auto">
                     A confirmation email has been sent to{" "}

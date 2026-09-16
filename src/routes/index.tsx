@@ -11,8 +11,8 @@ import { useBooking } from "@/components/booking/BookingContext";
 import { SERVICES, BUSINESS, LOCATIONS } from "@/lib/site-data";
 import realInterior from "@/assets/real-interior.jpg";
 import realBackCut from "@/assets/real-back-cut.jpg";
-import beforeHaircut from "@/assets/before-haircut.png";
-import afterHaircut from "@/assets/after-haircut.png";
+import realHaircutBefore from "@/assets/real-haircut-before.jpg";
+import realHaircutAfter from "@/assets/real-haircut-after.jpg";
 import barbersShowcaseVideo from "@/assets/barbers-showcase.mp4";
 
 export const Route = createFileRoute("/")({
@@ -177,12 +177,13 @@ function Index() {
             title="From the chair"
             intro="Drag the divider to reveal the difference. Every cut starts with a consultation — and ends here."
           />
-          <Reveal delay={0.15} className="mt-10">
+          <Reveal delay={0.15} className="mt-10 max-w-2xl mx-auto">
             <BeforeAfterSlider
-              beforeSrc={beforeHaircut}
-              afterSrc={afterHaircut}
-              beforeAlt="Overgrown hair — before visit to The Barbers"
-              afterAlt="Sharp fade haircut — after The Barbers Honolulu"
+              beforeSrc={realHaircutBefore}
+              afterSrc={realHaircutAfter}
+              aspectRatio="4/5"
+              beforeAlt="Long overgrown hair — before visit to The Barbers"
+              afterAlt="Clean skin fade haircut — after The Barbers Honolulu"
             />
           </Reveal>
         </div>
@@ -222,7 +223,7 @@ function Index() {
                 ))}
               </ul>
               <div className="mt-8">
-                <GoldButton onClick={() => openBooking()}>Book Your Chair</GoldButton>
+                <GoldButton onClick={() => openBooking()}>Book Appointment</GoldButton>
               </div>
             </Reveal>
 
@@ -292,7 +293,7 @@ function Index() {
           <Reveal variant="scale-up" delay={0.15} className="flex flex-col justify-center">
             <p className="eyebrow">Ready when you are</p>
             <h2 className="mt-4 font-serif text-3xl leading-tight sm:text-4xl">
-              Reserve your chair in Honolulu
+              Reserve your appointment in Honolulu
             </h2>
             <p className="mt-5 text-sm leading-relaxed text-muted-foreground">
               {loc.address}

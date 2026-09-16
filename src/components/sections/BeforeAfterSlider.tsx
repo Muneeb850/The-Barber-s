@@ -16,6 +16,9 @@ interface Props {
   afterAlt?: string;
   /** Initial position of the divider as a fraction 0–1. Default: 0.5 */
   initialPosition?: number;
+  aspectRatio?: string;
+  beforeObjectPosition?: string;
+  afterObjectPosition?: string;
   className?: string;
 }
 
@@ -28,6 +31,9 @@ export function BeforeAfterSlider({
   beforeAlt = "Before",
   afterAlt = "After",
   initialPosition = 0.5,
+  aspectRatio = "4/5",
+  beforeObjectPosition = "center",
+  afterObjectPosition = "center",
   className = "",
 }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -100,7 +106,7 @@ export function BeforeAfterSlider({
           src={beforeSrc}
           alt={beforeAlt}
           className="block h-full w-full object-cover select-none pointer-events-none"
-          style={{ aspectRatio: "16/9" }}
+          style={{ aspectRatio, objectPosition: beforeObjectPosition }}
           draggable={false}
           loading="lazy"
         />
@@ -121,7 +127,7 @@ export function BeforeAfterSlider({
             src={afterVideoSrc}
             poster={afterSrc}
             className="h-full w-full object-cover select-none pointer-events-none"
-            style={{ aspectRatio: "16/9" }}
+            style={{ aspectRatio, objectPosition: afterObjectPosition }}
             autoPlay
             loop
             muted
@@ -132,7 +138,7 @@ export function BeforeAfterSlider({
             src={afterSrc}
             alt={afterAlt}
             className="h-full w-full object-cover select-none pointer-events-none"
-            style={{ aspectRatio: "16/9" }}
+            style={{ aspectRatio, objectPosition: afterObjectPosition }}
             draggable={false}
             loading="lazy"
           />
