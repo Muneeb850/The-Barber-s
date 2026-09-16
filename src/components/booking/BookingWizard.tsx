@@ -29,7 +29,6 @@ import { cn } from "@/lib/utils";
 
 const STEPS = [
   "Service",
-  "Barber",
   "Date & Time",
   "Details",
   "Review",
@@ -166,10 +165,9 @@ export function BookingWizard() {
 
   const canAdvance =
     (step === 0 && !!serviceId) ||
-    (step === 1 && !!barberId) ||
-    (step === 2 && !!date && !!time) ||
-    step === 3 ||
-    step === 4;
+    (step === 1 && !!date && !!time) ||
+    step === 2 ||
+    step === 3;
 
   function go(next: number) {
     setDirection(next > step ? 1 : -1);
@@ -190,24 +188,19 @@ export function BookingWizard() {
     autoAdvanceTo(1);
   }
 
-  function handleSelectBarber(bId: string) {
-    setBarberId(bId);
+  function handleSelectTime(t: string) {
+    setTime(t);
     autoAdvanceTo(2);
   }
 
-  function handleSelectTime(t: string) {
-    setTime(t);
-    autoAdvanceTo(3);
-  }
-
   async function handleNext() {
-    if (step === 3) {
+    if (step === 2) {
       if (!validateDetails()) return;
-      go(4);
+      go(3);
       return;
     }
-    if (step === 4) {
-      if (!service || !barber || !date || !time) return;
+    if (step === 3) {
+      if (!service || !date || !time) return;
       setSubmitting(true);
       try {
         const res = await submitBooking({
@@ -216,8 +209,8 @@ export function BookingWizard() {
             serviceName: service.name,
             servicePrice: service.price,
             serviceDuration: service.duration,
-            barberId: barber.id,
-            barberName: barber.name,
+            barberId: ANY_BARBER.id,
+            barberName: ANY_BARBER.name,
             date: format(date, "yyyy-MM-dd"),
             time,
             name: details.name.trim(),
@@ -227,11 +220,11 @@ export function BookingWizard() {
           },
         });
         setReference(res.reference);
-        go(5);
+        go(4);
       } catch {
         const randomRef = `TB-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
         setReference(randomRef);
-        go(5);
+        go(4);
       } finally {
         setSubmitting(false);
       }
@@ -283,24 +276,24 @@ export function BookingWizard() {
         <div className="border-b border-border surface-linen px-6 py-5 sticky top-0 z-20 backdrop-blur-md bg-card/95">
           <div className="flex items-center justify-between">
             <DialogTitle className="font-serif text-2xl font-normal">
-              {step === 5 ? "Booking Confirmed" : "Book Appointment"}
+              {step === 4 ? "Booking Confirmed" : "Book Appointment"}
             </DialogTitle>
-            {step < 5 ? (
+            {step < 4 ? (
               <span className="text-[0.65rem] tracking-[0.2em] uppercase font-medium text-gold bg-gold/10 px-2.5 py-1 rounded-full">
-                Step {step + 1} of 5
+                Step {step + 1} of 4
               </span>
             ) : null}
           </div>
           <DialogDescription className="mt-1 text-xs tracking-[0.16em] uppercase text-muted-foreground">
-            {step === 5 ? "Reservation Details & Confirmation" : STEPS[step]}
+            {step === 4 ? "Reservation Details & Confirmation" : STEPS[step]}
           </DialogDescription>
           <div className="mt-4 flex gap-1.5" aria-label="Booking Progress">
-            {STEPS.slice(0, 5).map((s, i) => (
+            {STEPS.slice(0, 4).map((s, i) => (
               <button
                 key={s}
                 type="button"
                 aria-label={`Go to step ${s}`}
-                disabled={i > step || step === 5}
+                disabled={i > step || step === 4}
                 onClick={() => i < step && go(i)}
                 className={cn(
                   "h-1 flex-1 rounded-full transition-all duration-400",
@@ -369,64 +362,6 @@ export function BookingWizard() {
               {step === 1 ? (
                 <div>
                   <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground mb-3">
-                    Choose your Barber
-                  </p>
-                  <ul className="grid gap-3 sm:grid-cols-2">
-                    {[...BARBERS, null].map((b) => {
-                      const id = b?.id ?? ANY_BARBER.id;
-                      const isSelected = barberId === id;
-                      return (
-                        <li key={id}>
-                          <button
-                            type="button"
-                            onClick={() => handleSelectBarber(id)}
-                            className={cn(
-                              "flex w-full items-center gap-3 rounded-xl border p-3 text-left transition-all duration-300 cursor-pointer group hover:scale-[1.01]",
-                              isSelected
-                                ? "border-gold bg-gold/10 dark:bg-gold/15 shadow-sm ring-1 ring-gold/50"
-                                : "border-border hover:border-foreground/40 hover:bg-secondary/40",
-                            )}
-                          >
-                            {b ? (
-                              <img
-                                src={b.image}
-                                alt={b.name}
-                                loading="lazy"
-                                className="size-12 rounded-full object-cover border border-border shrink-0"
-                              />
-                            ) : (
-                              <span className="grid size-12 shrink-0 place-items-center rounded-full bg-secondary border border-border text-xs text-foreground font-medium">
-                                <Sparkles className="size-4 text-gold" />
-                              </span>
-                            )}
-                            <div className="min-w-0 flex-1">
-                              <span className="block truncate font-serif text-base font-semibold text-foreground">
-                                {b?.name ?? ANY_BARBER.name}
-                              </span>
-                              <span className="block truncate text-xs text-muted-foreground">
-                                {b?.specialty ?? ANY_BARBER.specialty}
-                              </span>
-                            </div>
-                            <div className="shrink-0">
-                              {isSelected ? (
-                                <span className="grid size-5 place-items-center rounded-full bg-gold text-background text-xs font-bold">
-                                  <Check className="size-3" />
-                                </span>
-                              ) : (
-                                <ChevronRight className="size-4 text-muted-foreground/40 group-hover:text-gold group-hover:translate-x-0.5 transition-all" />
-                              )}
-                            </div>
-                          </button>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </div>
-              ) : null}
-
-              {step === 2 ? (
-                <div>
-                  <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground mb-3">
                     Pick Date & Time
                   </p>
                   <div className="grid gap-6 md:grid-cols-[auto_minmax(0,1fr)]">
@@ -491,7 +426,7 @@ export function BookingWizard() {
                 </div>
               ) : null}
 
-              {step === 3 ? (
+              {step === 2 ? (
                 <div className="grid gap-4">
                   <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground mb-1">
                     Your Contact Information
@@ -596,7 +531,7 @@ export function BookingWizard() {
                 </div>
               ) : null}
 
-              {step === 4 ? (
+              {step === 3 ? (
                 <div className="space-y-3">
                   <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground mb-2">
                     Review Appointment Summary
@@ -616,25 +551,24 @@ export function BookingWizard() {
                       }
                       onEdit={() => go(0)}
                     />
-                    <Row label="Barber" value={barber?.name ?? ""} onEdit={() => go(1)} />
                     <Row
                       label="Date & Time"
                       value={date ? `${format(date, "EEEE, MMMM d, yyyy")} at ${time}` : ""}
-                      onEdit={() => go(2)}
+                      onEdit={() => go(1)}
                     />
                     <Row
                       label="Client Details"
                       value={`${details.name} · ${details.phone} · ${details.email}`}
-                      onEdit={() => go(3)}
+                      onEdit={() => go(2)}
                     />
                     {details.notes ? (
-                      <Row label="Notes" value={details.notes} onEdit={() => go(3)} />
+                      <Row label="Notes" value={details.notes} onEdit={() => go(2)} />
                     ) : null}
                     {discountType && (
                       <Row
                         label="Discount Applied"
                         value={`${discountType === "military" ? "Military Personnel" : "Senior Citizen"} — $${DISCOUNT_AMOUNT} off`}
-                        onEdit={() => go(3)}
+                        onEdit={() => go(2)}
                       />
                     )}
                   </div>
@@ -651,7 +585,7 @@ export function BookingWizard() {
                 </div>
               ) : null}
 
-              {step === 5 ? (
+              {step === 4 ? (
                 <div className="py-4 text-center">
                   <motion.div
                     initial={{ scale: 0.7, opacity: 0 }}
@@ -700,12 +634,6 @@ export function BookingWizard() {
                       <span className="font-medium text-foreground">
                         1430 Kona St #105, Honolulu
                       </span>
-                    </div>
-                    <div className="flex items-center justify-between border-b border-border/50 pb-2">
-                      <span className="text-muted-foreground flex items-center gap-1.5">
-                        <User className="size-3.5 text-gold" /> Barber
-                      </span>
-                      <span className="font-medium text-foreground">{barber?.name}</span>
                     </div>
                     <div className="flex items-center justify-between border-b border-border/50 pb-2">
                       <span className="text-muted-foreground flex items-center gap-1.5">
@@ -768,20 +696,20 @@ export function BookingWizard() {
         </div>
 
         <div className="flex items-center justify-between gap-3 border-t border-border px-6 py-4 bg-card">
-          {step > 0 && step < 5 ? (
+          {step > 0 && step < 4 ? (
             <GoldButton variant="ghost" size="sm" onClick={() => go(step - 1)}>
               <ChevronLeft className="mr-1 inline size-3.5" /> Back
             </GoldButton>
           ) : (
             <span />
           )}
-          {step < 5 ? (
+          {step < 4 ? (
             <GoldButton size="md" disabled={!canAdvance || submitting} onClick={handleNext}>
               {submitting ? (
                 <>
                   <Loader2 className="mr-2 inline size-4 animate-spin" /> Saving...
                 </>
-              ) : step === 4 ? (
+              ) : step === 3 ? (
                 "Confirm Booking"
               ) : (
                 <>

@@ -17,6 +17,7 @@ interface Props {
   /** Initial position of the divider as a fraction 0–1. Default: 0.5 */
   initialPosition?: number;
   aspectRatio?: string;
+  objectFit?: "contain" | "cover";
   beforeObjectPosition?: string;
   afterObjectPosition?: string;
   className?: string;
@@ -32,6 +33,7 @@ export function BeforeAfterSlider({
   afterAlt = "After",
   initialPosition = 0.5,
   aspectRatio = "4/5",
+  objectFit = "contain",
   beforeObjectPosition = "center",
   afterObjectPosition = "center",
   className = "",

@@ -11,8 +11,8 @@ import { useBooking } from "@/components/booking/BookingContext";
 import { SERVICES, BUSINESS, LOCATIONS } from "@/lib/site-data";
 import realInterior from "@/assets/real-interior.jpg";
 import realBackCut from "@/assets/real-back-cut.jpg";
-import realHaircutBefore from "@/assets/real-haircut-before.jpg";
-import realHaircutAfter from "@/assets/real-haircut-after.jpg";
+import newBeforeHaircut from "@/assets/new-before-haircut.jpg";
+import newAfterHaircut from "@/assets/new-after-haircut.jpg";
 import barbersShowcaseVideo from "@/assets/barbers-showcase.mp4";
 
 export const Route = createFileRoute("/")({
@@ -179,8 +179,8 @@ function Index() {
           />
           <Reveal delay={0.15} className="mt-10 max-w-2xl mx-auto">
             <BeforeAfterSlider
-              beforeSrc={realHaircutBefore}
-              afterSrc={realHaircutAfter}
+              beforeSrc={newBeforeHaircut}
+              afterSrc={newAfterHaircut}
               aspectRatio="4/5"
               beforeAlt="Long overgrown hair — before visit to The Barbers"
               afterAlt="Clean skin fade haircut — after The Barbers Honolulu"
