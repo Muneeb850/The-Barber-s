@@ -177,11 +177,12 @@ function Index() {
             title="From the chair"
             intro="Drag the divider to reveal the difference. Every cut starts with a consultation — and ends here."
           />
-          <Reveal delay={0.15} className="mt-10 max-w-2xl mx-auto">
+          <Reveal delay={0.15} className="mt-10 max-w-4xl mx-auto">
             <BeforeAfterSlider
               beforeSrc={newBeforeHaircut}
               afterSrc={newAfterHaircut}
-              aspectRatio="4/5"
+              aspectRatio="1/1"
+              objectFit="cover"
               beforeAlt="Long overgrown hair — before visit to The Barbers"
               afterAlt="Clean skin fade haircut — after The Barbers Honolulu"
             />

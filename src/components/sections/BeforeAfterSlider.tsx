@@ -107,7 +107,7 @@ export function BeforeAfterSlider({
         <img
           src={beforeSrc}
           alt={beforeAlt}
-          className="block h-full w-full object-cover select-none pointer-events-none"
+          className={`block h-full w-full select-none pointer-events-none ${objectFit === "cover" ? "object-cover" : "object-contain"}`}
           style={{ aspectRatio, objectPosition: beforeObjectPosition }}
           draggable={false}
           loading="lazy"
@@ -128,7 +128,7 @@ export function BeforeAfterSlider({
           <video
             src={afterVideoSrc}
             poster={afterSrc}
-            className="h-full w-full object-cover select-none pointer-events-none"
+            className={`h-full w-full select-none pointer-events-none ${objectFit === "cover" ? "object-cover" : "object-contain"}`}
             style={{ aspectRatio, objectPosition: afterObjectPosition }}
             autoPlay
             loop
@@ -139,7 +139,7 @@ export function BeforeAfterSlider({
           <img
             src={afterSrc}
             alt={afterAlt}
-            className="h-full w-full object-cover select-none pointer-events-none"
+            className={`h-full w-full select-none pointer-events-none ${objectFit === "cover" ? "object-cover" : "object-contain"}`}
             style={{ aspectRatio, objectPosition: afterObjectPosition }}
             draggable={false}
             loading="lazy"
