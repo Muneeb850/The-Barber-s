@@ -14,7 +14,7 @@ export const Route = createFileRoute("/services")({
       {
         name: "description",
         content:
-          "Haircuts, beard sculpting, hot towel straight shaves, kids cuts and combo packages at The Barbers Honolulu. Transparent pricing and appointment durations.",
+          "Haircuts, beard sculpting, hot towel straight shaves, kids cuts and combo packages at Tom's Barber Honolulu. Transparent pricing and appointment durations.",
       },
       { property: "og:title", content: `Services & Pricing | ${BUSINESS.name}` },
       {

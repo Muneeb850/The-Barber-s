@@ -9,16 +9,16 @@ import { GALLERY } from "@/lib/site-data";
 export const Route = createFileRoute("/gallery")({
   head: () => ({
     meta: [
-      { title: "Gallery | Cuts, Shaves & Styling at The Barbers Honolulu" },
+      { title: "Gallery | Cuts, Shaves & Styling at Tom's Barber Honolulu" },
       {
         name: "description",
         content:
-          "Browse fades, beard sculpts, hot towel shaves and styling work from the chairs at The Barbers in Honolulu.",
+          "Browse fades, beard sculpts, hot towel shaves and styling work from the chairs at Tom's Barber in Honolulu.",
       },
-      { property: "og:title", content: "Gallery | The Barbers Honolulu" },
+      { property: "og:title", content: "Gallery | Tom's Barber Honolulu" },
       {
         property: "og:description",
-        content: "Fades, beard sculpts and hot towel shaves from The Barbers chairs in Honolulu, HI.",
+        content: "Fades, beard sculpts and hot towel shaves from Tom's Barber chairs in Honolulu, HI.",
       },
     ],
   }),

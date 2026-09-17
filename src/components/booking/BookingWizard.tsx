@@ -243,9 +243,9 @@ export function BookingWizard() {
 
   const googleCalendarUrl = useMemo(() => {
     if (!date || !time || !service) return null;
-    const title = encodeURIComponent(`Haircut Appointment: ${service.name} at The Barbers`);
+    const title = encodeURIComponent(`Haircut Appointment: ${service.name} at Tom's Barber`);
     const detailsText = encodeURIComponent(
-      `Appointment at The Barbers\nService: ${service.name}\nBarber: ${barber?.name || "Any"}\nBooking Ref: ${reference || ""}\nLocation: 1430 Kona St #105, Honolulu, HI 96814`,
+      `Appointment at Tom's Barber\nService: ${service.name}\nBarber: ${barber?.name || "Any"}\nBooking Ref: ${reference || ""}\nLocation: 1430 Kona St #105, Honolulu, HI 96814`,
     );
     const locText = encodeURIComponent("1430 Kona St #105, Honolulu, HI 96814");
     return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&details=${detailsText}&location=${locText}`;
@@ -539,7 +539,7 @@ export function BookingWizard() {
                   <div className="rounded-xl border border-border p-4 bg-secondary/15 space-y-3">
                     <Row
                       label="Location"
-                      value="The Barbers — 1430 Kona St #105, Honolulu, HI 96814"
+                      value="Tom's Barber — 1430 Kona St #105, Honolulu, HI 96814"
                       onEdit={() => {}}
                     />
                     <Row

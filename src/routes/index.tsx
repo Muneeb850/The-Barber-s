@@ -18,13 +18,13 @@ import barbersShowcaseVideo from "@/assets/barbers-showcase.mp4";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "The Barbers | Premium Grooming Lounge in Honolulu, HI" },
+      { title: "Tom's Barber | Premium Grooming Lounge in Honolulu, HI" },
       {
         name: "description",
         content:
-          "A premier barbershop in Honolulu, HI. Signature cuts, beard sculpting and hot towel straight shaves — book your chair at The Barbers on Kona St.",
+          "A premier barbershop in Honolulu, HI. Signature cuts, beard sculpting and hot towel straight shaves — book your chair at Tom's Barber on Kona St.",
       },
-      { property: "og:title", content: "The Barbers | Premium Grooming in Honolulu" },
+      { property: "og:title", content: "Tom's Barber | Premium Grooming in Honolulu" },
       {
         property: "og:description",
         content: "Precision cuts, beard sculpting and hot towel shaves at 1430 Kona St #105, Honolulu, HI.",
@@ -97,7 +97,7 @@ function Index() {
 
           <ImageMaskReveal
             src={realInterior}
-            alt="The Barbers barbershop interior — barbers at work on multiple chairs"
+            alt="Tom's Barber barbershop interior — barbers at work on multiple chairs"
             width={1600}
             height={1100}
             delay={0.15}
@@ -183,8 +183,8 @@ function Index() {
               afterSrc={newAfterHaircut}
               aspectRatio="1/1"
               objectFit="cover"
-              beforeAlt="Long overgrown hair — before visit to The Barbers"
-              afterAlt="Clean skin fade haircut — after The Barbers Honolulu"
+              beforeAlt="Long overgrown hair — before visit to Tom's Barber"
+              afterAlt="Clean skin fade haircut — after Tom's Barber Honolulu"
             />
           </Reveal>
         </div>
@@ -213,7 +213,7 @@ function Index() {
               <ul className="mt-8 grid grid-cols-2 gap-4">
                 {[
                   { stat: "8+", label: "Years of craft" },
-                  { stat: "4.9★", label: "Average rating" },
+                  { stat: "4.5★", label: "Average rating" },
                   { stat: "100%", label: "Consultation first" },
                   { stat: "0", label: "Rushed cuts" },
                 ].map((item) => (

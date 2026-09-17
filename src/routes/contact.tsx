@@ -14,13 +14,13 @@ import { BUSINESS, LOCATIONS } from "@/lib/site-data";
 export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
-      { title: "Contact & Booking | The Barbers Honolulu" },
+      { title: "Contact & Booking | Tom's Barber Honolulu" },
       {
         name: "description",
         content:
-          "Visit The Barbers in Honolulu at 1430 Kona St #105. Call (808) 949-6081, see operating hours, or book your appointment online.",
+          "Visit Tom's Barber in Honolulu at 1430 Kona St #105. Call (808) 949-6081, see operating hours, or book your appointment online.",
       },
-      { property: "og:title", content: "Contact & Booking | The Barbers Honolulu" },
+      { property: "og:title", content: "Contact & Booking | Tom's Barber Honolulu" },
       {
         property: "og:description",
         content: "Honolulu's premier grooming lounge. Call (808) 949-6081 or book online.",

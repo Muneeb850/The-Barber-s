@@ -14,9 +14,9 @@ import realHaircutAction from "@/assets/real-haircut-action.jpg";
 import realShopExterior from "@/assets/real-shop-exterior.jpg";
 
 export const BUSINESS = {
-  name: "The Barbers",
+  name: "Tom's Barber",
   tagline: "The Art of the Modern Gentleman",
-  email: "thetxtbarbersone@gmail.com",
+  email: "tomsbarberone@gmail.com",
   phone: "(808) 949-6081",
   phoneHref: "tel:+18089496081",
   socials: [
@@ -33,6 +33,7 @@ export type LocationData = {
   address: string;
   street: string;
   city: string;
+  timezone: string;
   hours: { day: string; hours: string }[];
   mapEmbed: string;
   mapLink: string;
@@ -46,14 +47,15 @@ export const LOCATIONS: LocationData[] = [
     address: "1430 Kona St #105, Honolulu, HI 96814",
     street: "1430 Kona St #105",
     city: "Honolulu, HI 96814",
+    timezone: "US (Hawaii Standard Time - HST)",
     hours: [
       { day: "Monday", hours: "Closed" },
-      { day: "Tuesday", hours: "8:00 AM – 6:00 PM" },
-      { day: "Wednesday", hours: "8:00 AM – 6:00 PM" },
-      { day: "Thursday", hours: "8:00 AM – 6:00 PM" },
-      { day: "Friday", hours: "8:00 AM – 6:00 PM" },
-      { day: "Saturday", hours: "8:00 AM – 6:00 PM" },
-      { day: "Sunday", hours: "10:00 AM – 3:00 PM" },
+      { day: "Tuesday", hours: "8:00 AM – 6:00 PM HST" },
+      { day: "Wednesday", hours: "8:00 AM – 6:00 PM HST" },
+      { day: "Thursday", hours: "8:00 AM – 6:00 PM HST" },
+      { day: "Friday", hours: "8:00 AM – 6:00 PM HST" },
+      { day: "Saturday", hours: "8:00 AM – 6:00 PM HST" },
+      { day: "Sunday", hours: "10:00 AM – 3:00 PM HST" },
     ],
     mapEmbed:
       "https://maps.google.com/maps?q=1430%20Kona%20St%20%23105,%20Honolulu,%20HI%2096814&t=&z=15&ie=UTF8&iwloc=&output=embed",
@@ -196,7 +198,7 @@ export const BARBERS: Barber[] = [
     name: "Marcus Vance",
     role: "Master Barber & Lead Stylist",
     specialty: "Classic tapers, modern fades & precision cuts",
-    bio: "Over fifteen years of dedicated craftsmanship, establishing The Barbers as Honolulu's premier grooming destination.",
+    bio: "Over fifteen years of dedicated craftsmanship, establishing Tom's Barber as Honolulu's premier grooming destination.",
     image: barber1,
     socials: [
       { label: "Instagram", href: "https://instagram.com" },
@@ -242,14 +244,14 @@ export const ANY_BARBER = {
 };
 
 export const GALLERY = [
-  { src: realFadeCut, alt: "Curly skin fade — fresh from the chair at The Barbers", span: "tall" },
-  { src: realInterior, alt: "The Barbers lounge — barbers at work on multiple chairs", span: "wide" },
-  { src: realBackCut, alt: "Precision taper cut — back view at The Barbers", span: "tall" },
+  { src: realFadeCut, alt: "Curly skin fade — fresh from the chair at Tom's Barber", span: "tall" },
+  { src: realInterior, alt: "Tom's Barber lounge — barbers at work on multiple chairs", span: "wide" },
+  { src: realBackCut, alt: "Precision taper cut — back view at Tom's Barber", span: "tall" },
   { src: realLadiesService, alt: "Ladies styling service — expert curling iron finish", span: "wide" },
-  { src: realInterior2, alt: "It's a good hair day — inside The Barbers lounge", span: "tall" },
-  { src: realFadeCut2, alt: "Clean skin fade — precision neckline at The Barbers", span: "tall" },
-  { src: realHaircutAction, alt: "Master barber haircut — precision styling at The Barbers", span: "tall" },
-  { src: realShopExterior, alt: "The Barbers shop building & entrance on Kona Street, Honolulu", span: "wide" },
+  { src: realInterior2, alt: "It's a good hair day — inside Tom's Barber lounge", span: "tall" },
+  { src: realFadeCut2, alt: "Clean skin fade — precision neckline at Tom's Barber", span: "tall" },
+  { src: realHaircutAction, alt: "Master barber haircut — precision styling at Tom's Barber", span: "tall" },
+  { src: realShopExterior, alt: "Tom's Barber shop building & entrance on Kona Street, Honolulu", span: "wide" },
 ] as const;
 
 export { realInterior, realExterior, realBackCut, realFadeCut, realLadiesService, realHaircutAction, realShopExterior };

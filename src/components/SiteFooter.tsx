@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
-import { MapPin, Phone, Mail } from "lucide-react";
+import { MapPin, Phone, Mail, Clock } from "lucide-react";
 import { BUSINESS, LOCATIONS } from "@/lib/site-data";
+import logo from "@/assets/logo.png";
 
 export function SiteFooter() {
   const loc = LOCATIONS[0];
@@ -9,9 +10,12 @@ export function SiteFooter() {
     <footer className="border-t border-border surface-linen">
       <div className="mx-auto grid max-w-7xl gap-12 px-5 py-16 md:grid-cols-3 md:px-8">
         <div>
-          <p className="font-serif text-2xl tracking-[0.16em] uppercase font-bold text-foreground">
-            {BUSINESS.name}
-          </p>
+          <div className="flex items-center gap-3">
+            <img src={logo} alt={BUSINESS.name} className="h-12 w-auto object-contain" />
+            <p className="font-serif text-2xl tracking-[0.16em] uppercase font-bold text-foreground">
+              {BUSINESS.name}
+            </p>
+          </div>
           <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted-foreground">
             A premium grooming lounge in Honolulu, Hawaii — precision cuts, hot towel rituals and an
             unhurried chair.
@@ -80,9 +84,14 @@ export function SiteFooter() {
               </a>
             </li>
             <li>
-              <p className="text-[0.6rem] tracking-[0.2em] text-gold uppercase font-semibold">
-                Operating Hours:
-              </p>
+              <div className="flex items-center justify-between">
+                <p className="text-[0.6rem] tracking-[0.2em] text-gold uppercase font-semibold">
+                  Operating Hours:
+                </p>
+                <span className="text-[0.6rem] font-medium text-muted-foreground bg-gold/10 text-gold px-2 py-0.5 rounded-xs">
+                  US Time Zone (HST)
+                </span>
+              </div>
               <ul className="mt-2 space-y-1.5">
                 {loc.hours.map((h) => (
                   <li key={h.day} className="flex justify-between gap-4">
@@ -99,7 +108,7 @@ export function SiteFooter() {
       <div className="border-t border-border/70">
         <div className="mx-auto flex max-w-7xl flex-col gap-2 px-5 py-6 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between md:px-8">
           <p>© {new Date().getFullYear()} {BUSINESS.name}. All rights reserved.</p>
-          <p className="tracking-[0.2em] uppercase">Honolulu · Hawaii</p>
+          <p className="tracking-[0.2em] uppercase">Honolulu · Hawaii (US)</p>
         </div>
       </div>
     </footer>

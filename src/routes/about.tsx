@@ -9,16 +9,16 @@ import realLadiesService from "@/assets/real-ladies-service.jpg";
 export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
-      { title: "About The Barbers | Our Story & Philosophy — Honolulu Barbershop" },
+      { title: "About Tom's Barber | Our Story & Philosophy — Honolulu Barbershop" },
       {
         name: "description",
         content:
-          "The story behind The Barbers: a Honolulu grooming lounge built on craft, patience and hospitality. Meet our team and see inside the shop.",
+          "The story behind Tom's Barber: a Honolulu grooming lounge built on craft, patience and hospitality. Meet our team and see inside the shop.",
       },
-      { property: "og:title", content: "About The Barbers — Honolulu Barbershop" },
+      { property: "og:title", content: "About Tom's Barber — Honolulu Barbershop" },
       {
         property: "og:description",
-        content: "Craft, patience and hospitality in Honolulu. The story behind The Barbers.",
+        content: "Craft, patience and hospitality in Honolulu. The story behind Tom's Barber.",
       },
     ],
   }),
@@ -54,7 +54,7 @@ function About() {
         <div className="mx-auto grid max-w-7xl items-center gap-14 px-5 md:grid-cols-2 md:px-8">
           <ImageMaskReveal
             src={realInterior}
-            alt="The Barbers barbershop — barbers working on clients at Kona Street Honolulu"
+            alt="Tom's Barber barbershop — barbers working on clients at Kona Street Honolulu"
             width={1600}
             height={1100}
             className="shadow-[var(--shadow-soft)] rounded-sm border border-border/80"
@@ -117,7 +117,7 @@ function About() {
           <div className="mt-14 grid gap-6 md:grid-cols-2">
             <ImageMaskReveal
               src={realFadeCut}
-              alt="Curly skin fade — fresh from the chair at The Barbers Honolulu"
+              alt="Curly skin fade — fresh from the chair at Tom's Barber Honolulu"
               width={1200}
               height={900}
               delay={0.1}

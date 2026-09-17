@@ -87,14 +87,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "The Barbers | Premium Grooming Lounge in Honolulu, HI" },
+      { title: "Tom's Barber | Premium Grooming Lounge in Honolulu, HI" },
       {
         name: "description",
         content:
-          "The Barbers is a premier barbershop and grooming lounge in Honolulu, HI (1430 Kona St). Precision cuts, beard sculpting and hot towel straight shaves.",
+          "Tom's Barber is a premier barbershop and grooming lounge in Honolulu, HI (1430 Kona St). Precision cuts, beard sculpting and hot towel straight shaves.",
       },
-      { name: "author", content: "The Barbers" },
-      { property: "og:title", content: "The Barbers | Premium Grooming Lounge in Honolulu, HI" },
+      { name: "author", content: "Tom's Barber" },
+      { property: "og:title", content: "Tom's Barber | Premium Grooming Lounge in Honolulu, HI" },
       {
         property: "og:description",
         content:
