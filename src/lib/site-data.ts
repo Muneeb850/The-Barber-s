@@ -16,7 +16,7 @@ import realShopExterior from "@/assets/real-shop-exterior.jpg";
 export const BUSINESS = {
   name: "Tom's Barber",
   tagline: "The Art of the Modern Gentleman",
-  email: "barbersone@gmail.com",
+  email: "thetxtbarbersone@gmail.com",
   phone: "(808) 949-6081",
   phoneHref: "tel:+18089496081",
   socials: [
