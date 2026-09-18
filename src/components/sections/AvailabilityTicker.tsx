@@ -14,12 +14,13 @@ import { useBooking } from "@/components/booking/BookingContext";
 const LUXURY_EASE = [0.22, 0.61, 0.36, 1] as const;
 const SESSION_KEY = "thebarbers_ticker_dismissed";
 
-/** Parse "9:00 AM" → minutes from midnight */
+/** Parse "9:00 AM" or "6:00 PM HST" → minutes from midnight */
 function parseTime(str: string): number {
-  const m = str.trim().match(/^(\d+):(\d+)\s*(AM|PM)$/i);
+  const clean = str.replace(/[A-Z]{3,}$/i, "").trim();
+  const m = clean.match(/^(\d+):(\d+)\s*(AM|PM)$/i);
   if (!m) return 0;
-  let h = parseInt(m[1]);
-  const min = parseInt(m[2]);
+  let h = parseInt(m[1], 10);
+  const min = parseInt(m[2], 10);
   const ampm = m[3].toUpperCase();
   if (ampm === "PM" && h < 12) h += 12;
   if (ampm === "AM" && h === 12) h = 0;
@@ -33,11 +34,32 @@ type LocationStatus = {
   closingTime: string | null;
 };
 
+function getHawaiiTime() {
+  const now = new Date();
+  const formatter = new Intl.DateTimeFormat("en-US", {
+    timeZone: "Pacific/Honolulu",
+    weekday: "long",
+    hour: "numeric",
+    minute: "numeric",
+    hour12: false,
+  });
+  const parts = formatter.formatToParts(now);
+  let dayName = "";
+  let hour = 0;
+  let minute = 0;
+
+  for (const part of parts) {
+    if (part.type === "weekday") dayName = part.value;
+    if (part.type === "hour") hour = parseInt(part.value, 10) % 24;
+    if (part.type === "minute") minute = parseInt(part.value, 10);
+  }
+
+  return { dayName, currentMinutes: hour * 60 + minute };
+}
+
 function computeStatus(): LocationStatus {
   const loc = LOCATIONS[0];
-  const now = new Date();
-  const dayName = now.toLocaleDateString("en-US", { weekday: "long" });
-  const currentMinutes = now.getHours() * 60 + now.getMinutes();
+  const { dayName, currentMinutes } = getHawaiiTime();
 
   const dayHours = loc.hours.find((h) => h.day === dayName);
   if (!dayHours || dayHours.hours.toLowerCase().includes("closed")) {

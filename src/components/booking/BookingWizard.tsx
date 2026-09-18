@@ -43,9 +43,10 @@ type DiscountType = null | "military" | "senior";
 const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 const phoneRe = /^[0-9+()\-.\s]{7,25}$/;
 
-// Helper to convert time string (e.g. "9:00 AM") to minutes from midnight
+// Helper to convert time string (e.g. "9:00 AM" or "6:00 PM HST") to minutes from midnight
 function timeToMinutes(timeStr: string): number {
-  const match = timeStr.trim().match(/^(\d+):(\d+)\s*(AM|PM)$/i);
+  const clean = timeStr.replace(/[A-Z]{3,}$/i, "").trim();
+  const match = clean.match(/^(\d+):(\d+)\s*(AM|PM)$/i);
   if (!match) return 0;
   let hours = parseInt(match[1], 10);
   const minutes = parseInt(match[2], 10);
