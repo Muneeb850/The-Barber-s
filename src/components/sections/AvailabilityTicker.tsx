@@ -33,32 +33,11 @@ type LocationStatus = {
   closingTime: string | null;
 };
 
-function getHawaiiTime() {
-  const now = new Date();
-  const formatter = new Intl.DateTimeFormat("en-US", {
-    timeZone: "Pacific/Honolulu",
-    weekday: "long",
-    hour: "numeric",
-    minute: "numeric",
-    hour12: false,
-  });
-  const parts = formatter.formatToParts(now);
-  let dayName = "";
-  let hour = 0;
-  let minute = 0;
-
-  for (const part of parts) {
-    if (part.type === "weekday") dayName = part.value;
-    if (part.type === "hour") hour = parseInt(part.value, 10) % 24;
-    if (part.type === "minute") minute = parseInt(part.value, 10);
-  }
-
-  return { dayName, currentMinutes: hour * 60 + minute };
-}
-
 function computeStatus(): LocationStatus {
   const loc = LOCATIONS[0];
-  const { dayName, currentMinutes } = getHawaiiTime();
+  const now = new Date();
+  const dayName = now.toLocaleDateString("en-US", { weekday: "long" });
+  const currentMinutes = now.getHours() * 60 + now.getMinutes();
 
   const dayHours = loc.hours.find((h) => h.day === dayName);
   if (!dayHours || dayHours.hours.toLowerCase().includes("closed")) {
@@ -95,10 +74,6 @@ export function AvailabilityTicker() {
       setVisible(true);
     }
     setStatus(computeStatus());
-    const timer = setInterval(() => {
-      setStatus(computeStatus());
-    }, 60000);
-    return () => clearInterval(timer);
   }, []);
 
   const dismiss = useCallback(() => {
