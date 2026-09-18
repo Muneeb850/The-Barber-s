@@ -374,11 +374,11 @@ export function BookingWizard() {
                           setDate(d);
                           setTime(null);
                         }}
-                        disabled={(d) => d < startOfToday() || d.getDay() === 0}
+                        disabled={(d) => d < startOfToday()}
                         className="pointer-events-auto rounded-xl border border-border p-3 shadow-xs bg-card/60"
                       />
                       <p className="mt-2 text-[0.68rem] text-muted-foreground">
-                        Sundays: Closed
+                        Open 7 Days a Week
                       </p>
                     </div>
                     <div>

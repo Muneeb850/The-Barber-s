@@ -59,28 +59,11 @@ function getHawaiiTime() {
 
 function computeStatus(): LocationStatus {
   const loc = LOCATIONS[0];
-  const { dayName, currentMinutes } = getHawaiiTime();
-
-  const dayHours = loc.hours.find((h) => h.day === dayName);
-  if (!dayHours || dayHours.hours.toLowerCase().includes("closed")) {
-    return { shortName: loc.shortName, isOpen: false, nextSlot: null, closingTime: null };
-  }
-
-  const parts = dayHours.hours.split("–");
-  const openMin = parseTime(parts[0] || "9:00 AM");
-  const closeMin = parseTime(parts[1] || "7:00 PM");
-  const isOpen = currentMinutes >= openMin && currentMinutes < closeMin;
-
-  const nextSlot = TIME_SLOTS.find((slot) => {
-    const slotMin = parseTime(slot);
-    return slotMin > currentMinutes && slotMin + 30 <= closeMin;
-  });
-
   return {
     shortName: loc.shortName,
-    isOpen,
-    nextSlot: nextSlot ?? null,
-    closingTime: parts[1] ? parts[1].trim() : null,
+    isOpen: true,
+    nextSlot: TIME_SLOTS[0] || "8:00 AM",
+    closingTime: "6:00 PM HST",
   };
 }
 
@@ -130,33 +113,18 @@ export function AvailabilityTicker() {
                   Honolulu Lounge
                 </span>
                 <span className="text-slate-400">·</span>
-                {status.isOpen ? (
-                  <>
-                    <span className="flex items-center gap-1 text-[0.65rem] tracking-wider text-zinc-200">
-                      <span className="size-1.5 rounded-full bg-emerald-500 inline-block animate-pulse" />
-                      Open now until {status.closingTime}
-                    </span>
-                    {status.nextSlot && (
-                      <>
-                        <span className="text-slate-400">·</span>
-                        <span className="text-[0.65rem] tracking-wider text-zinc-300">
-                          Next open chair: <span className="text-gold font-medium">{status.nextSlot}</span>
-                        </span>
-                        <button
-                          type="button"
-                          onClick={() => openBooking()}
-                          className="ml-1 rounded-sm border border-gold/40 px-2 py-0.5 text-[0.6rem] tracking-[0.2em] text-gold uppercase transition-colors hover:bg-gold/10 cursor-pointer font-medium"
-                        >
-                          Book Now →
-                        </button>
-                      </>
-                    )}
-                  </>
-                ) : (
-                  <span className="text-[0.65rem] tracking-wider text-zinc-400">
-                    Closed currently · Walk-ins & Bookings welcome during open hours
-                  </span>
-                )}
+                <span className="flex items-center gap-1 text-[0.65rem] tracking-wider text-zinc-200">
+                  <span className="size-1.5 rounded-full bg-emerald-500 inline-block animate-pulse" />
+                  Open now · Walk-ins & Bookings welcome
+                </span>
+                <span className="text-slate-400">·</span>
+                <button
+                  type="button"
+                  onClick={() => openBooking()}
+                  className="ml-1 rounded-sm border border-gold/40 px-2 py-0.5 text-[0.6rem] tracking-[0.2em] text-gold uppercase transition-colors hover:bg-gold/10 cursor-pointer font-medium"
+                >
+                  Book Now →
+                </button>
               </div>
             </div>
 

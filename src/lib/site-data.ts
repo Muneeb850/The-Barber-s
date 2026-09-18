@@ -49,7 +49,7 @@ export const LOCATIONS: LocationData[] = [
     city: "Honolulu, HI 96814",
     timezone: "US (Hawaii Standard Time - HST)",
     hours: [
-      { day: "Monday", hours: "Closed" },
+      { day: "Monday", hours: "8:00 AM – 6:00 PM HST" },
       { day: "Tuesday", hours: "8:00 AM – 6:00 PM HST" },
       { day: "Wednesday", hours: "8:00 AM – 6:00 PM HST" },
       { day: "Thursday", hours: "8:00 AM – 6:00 PM HST" },
