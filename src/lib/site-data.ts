@@ -137,8 +137,7 @@ export const SERVICES: Service[] = [
   {
     id: "men-haircut-shampoo",
     name: "Men Haircut & Shampoo",
-    description:
-      "A fresh haircut with an invigorating shampoo wash for a clean, refreshed finish.",
+    description: "A fresh haircut with an invigorating shampoo wash for a clean, refreshed finish.",
     price: 35,
     duration: 40,
     category: "men",
@@ -147,8 +146,7 @@ export const SERVICES: Service[] = [
   {
     id: "lady-short-layer",
     name: "Lady Short Layer",
-    description:
-      "Layered cut for short hair, shaped and styled to add volume and movement.",
+    description: "Layered cut for short hair, shaped and styled to add volume and movement.",
     price: 40,
     duration: 45,
     category: "ladies",
@@ -174,8 +172,7 @@ export const SERVICES: Service[] = [
   {
     id: "lady-shampoo-blowdry-style",
     name: "Lady Shampoo, Blowdry & Style",
-    description:
-      "Full wash, blowdry and styling — finished and polished, ready for any occasion.",
+    description: "Full wash, blowdry and styling — finished and polished, ready for any occasion.",
     price: 50,
     duration: 50,
     category: "ladies",
@@ -245,16 +242,40 @@ export const ANY_BARBER = {
 
 export const GALLERY = [
   { src: realFadeCut, alt: "Curly skin fade — fresh from the chair at Tom's Barber", span: "tall" },
-  { src: realInterior, alt: "Tom's Barber lounge — barbers at work on multiple chairs", span: "wide" },
+  {
+    src: realInterior,
+    alt: "Tom's Barber lounge — barbers at work on multiple chairs",
+    span: "wide",
+  },
   { src: realBackCut, alt: "Precision taper cut — back view at Tom's Barber", span: "tall" },
-  { src: realLadiesService, alt: "Ladies styling service — expert curling iron finish", span: "wide" },
+  {
+    src: realLadiesService,
+    alt: "Ladies styling service — expert curling iron finish",
+    span: "wide",
+  },
   { src: realInterior2, alt: "It's a good hair day — inside Tom's Barber lounge", span: "tall" },
   { src: realFadeCut2, alt: "Clean skin fade — precision neckline at Tom's Barber", span: "tall" },
-  { src: realHaircutAction, alt: "Master barber haircut — precision styling at Tom's Barber", span: "tall" },
-  { src: realShopExterior, alt: "Tom's Barber shop building & entrance on Kona Street, Honolulu", span: "wide" },
+  {
+    src: realHaircutAction,
+    alt: "Master barber haircut — precision styling at Tom's Barber",
+    span: "tall",
+  },
+  {
+    src: realShopExterior,
+    alt: "Tom's Barber shop building & entrance on Kona Street, Honolulu",
+    span: "wide",
+  },
 ] as const;
 
-export { realInterior, realExterior, realBackCut, realFadeCut, realLadiesService, realHaircutAction, realShopExterior };
+export {
+  realInterior,
+  realExterior,
+  realBackCut,
+  realFadeCut,
+  realLadiesService,
+  realHaircutAction,
+  realShopExterior,
+};
 
 export const TESTIMONIALS = [
   {

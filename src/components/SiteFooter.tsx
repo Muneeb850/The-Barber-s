@@ -30,7 +30,10 @@ export function SiteFooter() {
             </li>
             <li className="flex gap-2">
               <Mail className="size-4 shrink-0 text-gold" aria-hidden="true" />
-              <a href={`mailto:${BUSINESS.email}`} className="hover:text-foreground transition-colors">
+              <a
+                href={`mailto:${BUSINESS.email}`}
+                className="hover:text-foreground transition-colors"
+              >
                 {BUSINESS.email}
               </a>
             </li>
@@ -107,7 +110,9 @@ export function SiteFooter() {
 
       <div className="border-t border-border/70">
         <div className="mx-auto flex max-w-7xl flex-col gap-2 px-5 py-6 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between md:px-8">
-          <p>© {new Date().getFullYear()} {BUSINESS.name}. All rights reserved.</p>
+          <p>
+            © {new Date().getFullYear()} {BUSINESS.name}. All rights reserved.
+          </p>
           <p className="tracking-[0.2em] uppercase">Honolulu · Hawaii (US)</p>
         </div>
       </div>

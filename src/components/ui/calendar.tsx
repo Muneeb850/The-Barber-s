@@ -100,7 +100,10 @@ function Calendar({
           "text-muted-foreground/40 aria-selected:text-muted-foreground",
           defaultClassNames.outside,
         ),
-        disabled: cn("text-muted-foreground/30 opacity-40 cursor-not-allowed", defaultClassNames.disabled),
+        disabled: cn(
+          "text-muted-foreground/30 opacity-40 cursor-not-allowed",
+          defaultClassNames.disabled,
+        ),
         hidden: cn("invisible", defaultClassNames.hidden),
         ...classNames,
       }}

@@ -18,7 +18,8 @@ export const Route = createFileRoute("/gallery")({
       { property: "og:title", content: "Gallery | Tom's Barber Honolulu" },
       {
         property: "og:description",
-        content: "Fades, beard sculpts and hot towel shaves from Tom's Barber chairs in Honolulu, HI.",
+        content:
+          "Fades, beard sculpts and hot towel shaves from Tom's Barber chairs in Honolulu, HI.",
       },
     ],
   }),
@@ -80,8 +81,9 @@ function GalleryPage() {
                     src={g.src}
                     alt={g.alt}
                     loading="lazy"
-                    className={`w-full object-cover transition-transform duration-750 ease-[cubic-bezier(0.22,0.61,0.36,1)] group-hover:scale-[1.07] ${g.span === "tall" ? "aspect-[3/4]" : "aspect-[4/3]"
-                      }`}
+                    className={`w-full object-cover transition-transform duration-750 ease-[cubic-bezier(0.22,0.61,0.36,1)] group-hover:scale-[1.07] ${
+                      g.span === "tall" ? "aspect-[3/4]" : "aspect-[4/3]"
+                    }`}
                   />
                   <span className="absolute inset-0 bg-gradient-to-t from-espresso/60 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100 flex items-end p-5">
                     <span className="text-xs font-medium tracking-widest text-gold uppercase drop-shadow-md">

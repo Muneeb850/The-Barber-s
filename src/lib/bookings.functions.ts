@@ -28,7 +28,7 @@ function makeReference() {
 }
 
 export const createBooking = createServerFn({ method: "POST" })
-  .inputValidator((data: unknown) => bookingSchema.parse(data))
+  .validator((data: unknown) => bookingSchema.parse(data))
   .handler(async ({ data }) => {
     const reference = makeReference();
 
@@ -51,17 +51,42 @@ export const createBooking = createServerFn({ method: "POST" })
       });
 
       if (error) {
-        console.warn("[Booking] Supabase insert warning (proceeding with confirmation):", error.message);
+        console.warn(
+          "[Booking] Supabase insert warning (proceeding with confirmation):",
+          error.message,
+        );
       }
-    } catch (err: any) {
-      console.warn("[Booking] Supabase client error (proceeding with confirmation):", err?.message || err);
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      console.warn("[Booking] Supabase client error (proceeding with confirmation):", msg);
+    }
+
+    // Trigger instant Resend email notifications (Customer Confirmation + Shop Owner Notification)
+    try {
+      const { sendBookingEmails } = await import("@/lib/email.server");
+      await sendBookingEmails({
+        reference,
+        serviceName: data.serviceName,
+        servicePrice: data.price,
+        serviceDuration: data.duration,
+        barberName: data.barberName,
+        date: data.date,
+        time: data.time,
+        customerName: data.name,
+        customerPhone: data.phone,
+        customerEmail: data.email,
+        notes: data.notes || "",
+      });
+    } catch (emailErr: unknown) {
+      const msg = emailErr instanceof Error ? emailErr.message : String(emailErr);
+      console.warn("[Booking] Email notification error (proceeding with booking):", msg);
     }
 
     return { reference };
   });
 
 export const getBookedSlots = createServerFn({ method: "POST" })
-  .inputValidator((data: unknown) =>
+  .validator((data: unknown) =>
     z.object({ date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/) }).parse(data),
   )
   .handler(async ({ data }) => {

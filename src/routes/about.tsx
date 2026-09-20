@@ -70,10 +70,10 @@ function About() {
             </p>
             <div className="rule-gold mt-6 max-w-24" aria-hidden="true" />
             <p className="mt-6 text-base leading-relaxed text-muted-foreground">
-              {BUSINESS.name} was founded with a clear vision: to create a grooming experience
-              that rejects the rushed pace of modern commercial barbershops. Committed to the
-              highest standards of the craft, we established a sanctuary where every cut is a
-              precise collaboration and every service is given the dedicated time it deserves.
+              {BUSINESS.name} was founded with a clear vision: to create a grooming experience that
+              rejects the rushed pace of modern commercial barbershops. Committed to the highest
+              standards of the craft, we established a sanctuary where every cut is a precise
+              collaboration and every service is given the dedicated time it deserves.
             </p>
             <p className="mt-4 text-base leading-relaxed text-muted-foreground">
               Located at 1430 Kona St in Honolulu, our lounge brings together master barbers

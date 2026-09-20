@@ -27,13 +27,7 @@ import { ANY_BARBER, BARBERS, SERVICES, TIME_SLOTS, LOCATIONS } from "@/lib/site
 import { createBooking, getBookedSlots } from "@/lib/bookings.functions";
 import { cn } from "@/lib/utils";
 
-const STEPS = [
-  "Service",
-  "Date & Time",
-  "Details",
-  "Review",
-  "Confirmation",
-] as const;
+const STEPS = ["Service", "Date & Time", "Details", "Review", "Confirmation"] as const;
 
 type Details = { name: string; phone: string; email: string; notes: string };
 
@@ -165,10 +159,7 @@ export function BookingWizard() {
   }
 
   const canAdvance =
-    (step === 0 && !!serviceId) ||
-    (step === 1 && !!date && !!time) ||
-    step === 2 ||
-    step === 3;
+    (step === 0 && !!serviceId) || (step === 1 && !!date && !!time) || step === 2 || step === 3;
 
   function go(next: number) {
     setDirection(next > step ? 1 : -1);
@@ -341,7 +332,8 @@ export function BookingWizard() {
                           <div className="min-w-0">
                             <p className="font-serif text-lg font-semibold truncate">{s.name}</p>
                             <p className="mt-1 text-xs text-muted-foreground">
-                              <span className="text-gold font-semibold">${s.price}</span> · {s.duration} min
+                              <span className="text-gold font-semibold">${s.price}</span> ·{" "}
+                              {s.duration} min
                             </p>
                           </div>
                           <div className="shrink-0 flex items-center gap-2">
@@ -480,7 +472,9 @@ export function BookingWizard() {
                     <div className="grid gap-2 sm:grid-cols-2">
                       <button
                         type="button"
-                        onClick={() => setDiscountType(discountType === "military" ? null : "military")}
+                        onClick={() =>
+                          setDiscountType(discountType === "military" ? null : "military")
+                        }
                         className={cn(
                           "flex items-center gap-3 rounded-xl border p-3 text-left transition-all duration-200 cursor-pointer",
                           discountType === "military"
@@ -493,7 +487,10 @@ export function BookingWizard() {
                         </span>
                         <div className="min-w-0">
                           <p className="font-serif text-sm font-semibold">Military Personnel</p>
-                          <p className="text-xs text-muted-foreground"><span className="text-gold font-semibold">$3 off</span> · valid ID required</p>
+                          <p className="text-xs text-muted-foreground">
+                            <span className="text-gold font-semibold">$3 off</span> · valid ID
+                            required
+                          </p>
                         </div>
                         {discountType === "military" && (
                           <span className="ml-auto grid size-5 place-items-center rounded-full bg-gold text-background">
@@ -516,7 +513,10 @@ export function BookingWizard() {
                         </span>
                         <div className="min-w-0">
                           <p className="font-serif text-sm font-semibold">Senior Citizen</p>
-                          <p className="text-xs text-muted-foreground"><span className="text-gold font-semibold">$3 off</span> · 65 years &amp; older</p>
+                          <p className="text-xs text-muted-foreground">
+                            <span className="text-gold font-semibold">$3 off</span> · 65 years &amp;
+                            older
+                          </p>
                         </div>
                         {discountType === "senior" && (
                           <span className="ml-auto grid size-5 place-items-center rounded-full bg-gold text-background">
@@ -526,7 +526,9 @@ export function BookingWizard() {
                       </button>
                     </div>
                     {discountType && (
-                      <p className="mt-2 text-xs text-muted-foreground">Discount will be applied at the chair upon showing valid ID.</p>
+                      <p className="mt-2 text-xs text-muted-foreground">
+                        Discount will be applied at the chair upon showing valid ID.
+                      </p>
                     )}
                   </div>
                 </div>
@@ -619,11 +621,17 @@ export function BookingWizard() {
                         className="p-1.5 rounded-md hover:bg-secondary text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
                         title="Copy Reference"
                       >
-                        {copied ? <Check className="size-4 text-green-500" /> : <Copy className="size-4" />}
+                        {copied ? (
+                          <Check className="size-4 text-green-500" />
+                        ) : (
+                          <Copy className="size-4" />
+                        )}
                       </button>
                     </div>
                     {copied && (
-                      <p className="mt-1 text-[0.68rem] text-green-500 font-medium">Copied to clipboard!</p>
+                      <p className="mt-1 text-[0.68rem] text-green-500 font-medium">
+                        Copied to clipboard!
+                      </p>
                     )}
                   </div>
 
@@ -640,18 +648,16 @@ export function BookingWizard() {
                       <span className="text-muted-foreground flex items-center gap-1.5">
                         <Clock className="size-3.5 text-gold" /> Service
                       </span>
-                      <span className="font-medium text-foreground">
-                        {service?.name}
-                      </span>
+                      <span className="font-medium text-foreground">{service?.name}</span>
                     </div>
                     <div className="flex items-center justify-between border-b border-border/50 pb-2">
-                      <span className="text-muted-foreground flex items-center gap-1.5">
-                        Price
-                      </span>
+                      <span className="text-muted-foreground flex items-center gap-1.5">Price</span>
                       <div className="text-right">
                         {discountType ? (
                           <>
-                            <span className="line-through text-muted-foreground/60 text-[0.7rem] mr-1.5">${originalPrice}</span>
+                            <span className="line-through text-muted-foreground/60 text-[0.7rem] mr-1.5">
+                              ${originalPrice}
+                            </span>
                             <span className="font-bold text-gold">${finalPrice}</span>
                           </>
                         ) : (
@@ -662,10 +668,16 @@ export function BookingWizard() {
                     {discountType && (
                       <div className="flex items-center justify-between border-b border-border/50 pb-2">
                         <span className="text-muted-foreground flex items-center gap-1.5">
-                          {discountType === "military" ? <Shield className="size-3.5 text-gold" /> : <Star className="size-3.5 text-gold" />}
+                          {discountType === "military" ? (
+                            <Shield className="size-3.5 text-gold" />
+                          ) : (
+                            <Star className="size-3.5 text-gold" />
+                          )}
                           Discount
                         </span>
-                        <span className="font-medium text-green-500">− $3 ({discountType === "military" ? "Military" : "Senior"})</span>
+                        <span className="font-medium text-green-500">
+                          − $3 ({discountType === "military" ? "Military" : "Senior"})
+                        </span>
                       </div>
                     )}
                     <div className="flex items-center justify-between">

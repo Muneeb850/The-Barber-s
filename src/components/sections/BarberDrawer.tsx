@@ -120,11 +120,7 @@ export function BarberDrawer({ barber, onClose, onBook }: Props) {
               {/* Star Rating (always 5 for luxury branding) */}
               <div className="mt-3 flex gap-0.5" aria-label="5 star rating">
                 {Array.from({ length: 5 }).map((_, i) => (
-                  <Star
-                    key={i}
-                    className="size-3.5 fill-gold text-gold"
-                    aria-hidden="true"
-                  />
+                  <Star key={i} className="size-3.5 fill-gold text-gold" aria-hidden="true" />
                 ))}
                 <span className="ml-1.5 text-[0.65rem] text-muted-foreground tracking-wider">
                   Top rated
@@ -132,9 +128,7 @@ export function BarberDrawer({ barber, onClose, onBook }: Props) {
               </div>
 
               {/* Bio */}
-              <p className="mt-5 text-sm leading-relaxed text-muted-foreground">
-                {barber.bio}
-              </p>
+              <p className="mt-5 text-sm leading-relaxed text-muted-foreground">{barber.bio}</p>
 
               {/* Signature Services */}
               <div className="mt-5 rounded-sm border border-border/60 bg-background/60 p-4">

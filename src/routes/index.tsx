@@ -27,7 +27,8 @@ export const Route = createFileRoute("/")({
       { property: "og:title", content: "Tom's Barber | Premium Grooming in Honolulu" },
       {
         property: "og:description",
-        content: "Precision cuts, beard sculpting and hot towel shaves at 1430 Kona St #105, Honolulu, HI.",
+        content:
+          "Precision cuts, beard sculpting and hot towel shaves at 1430 Kona St #105, Honolulu, HI.",
       },
     ],
   }),
@@ -197,18 +198,18 @@ function Index() {
       <section className="py-24 md:py-32 overflow-hidden">
         <div className="mx-auto max-w-7xl px-5 md:px-8">
           <div className="grid items-center gap-14 md:grid-cols-2">
-
             {/* Left — copy */}
             <Reveal variant="slide-left">
               <p className="eyebrow text-gold">In the Shop</p>
               <h2 className="mt-4 font-serif text-3xl leading-tight sm:text-4xl md:text-5xl">
-                The craft,<br />
+                The craft,
+                <br />
                 <span className="italic">unfiltered</span>
               </h2>
               <div className="rule-gold mt-6 max-w-24" aria-hidden="true" />
               <p className="mt-6 text-base leading-relaxed text-muted-foreground">
-                Real moments from our chairs — the precision, the ritual, the finish.
-                This is what it looks like when a barber takes their time.
+                Real moments from our chairs — the precision, the ritual, the finish. This is what
+                it looks like when a barber takes their time.
               </p>
               <ul className="mt-8 grid grid-cols-2 gap-4">
                 {[
@@ -219,7 +220,9 @@ function Index() {
                 ].map((item) => (
                   <li key={item.label} className="lux-card rounded-sm p-4">
                     <p className="font-serif text-2xl text-gold">{item.stat}</p>
-                    <p className="mt-1 text-xs tracking-[0.18em] uppercase text-muted-foreground font-medium">{item.label}</p>
+                    <p className="mt-1 text-xs tracking-[0.18em] uppercase text-muted-foreground font-medium">
+                      {item.label}
+                    </p>
                   </li>
                 ))}
               </ul>
@@ -259,15 +262,29 @@ function Index() {
                   </div>
                 </div>
                 {/* Side buttons */}
-                <div className="absolute -left-[9px] top-24 w-[7px] h-8 rounded-l-sm bg-foreground/70" aria-hidden="true" />
-                <div className="absolute -left-[9px] top-36 w-[7px] h-12 rounded-l-sm bg-foreground/70" aria-hidden="true" />
-                <div className="absolute -left-[9px] top-52 w-[7px] h-12 rounded-l-sm bg-foreground/70" aria-hidden="true" />
-                <div className="absolute -right-[9px] top-36 w-[7px] h-16 rounded-r-sm bg-foreground/70" aria-hidden="true" />
+                <div
+                  className="absolute -left-[9px] top-24 w-[7px] h-8 rounded-l-sm bg-foreground/70"
+                  aria-hidden="true"
+                />
+                <div
+                  className="absolute -left-[9px] top-36 w-[7px] h-12 rounded-l-sm bg-foreground/70"
+                  aria-hidden="true"
+                />
+                <div
+                  className="absolute -left-[9px] top-52 w-[7px] h-12 rounded-l-sm bg-foreground/70"
+                  aria-hidden="true"
+                />
+                <div
+                  className="absolute -right-[9px] top-36 w-[7px] h-16 rounded-r-sm bg-foreground/70"
+                  aria-hidden="true"
+                />
                 {/* Gold glow beneath phone */}
-                <div className="pointer-events-none absolute -bottom-8 left-1/2 -translate-x-1/2 w-48 h-16 rounded-full bg-gold/20 blur-2xl" aria-hidden="true" />
+                <div
+                  className="pointer-events-none absolute -bottom-8 left-1/2 -translate-x-1/2 w-48 h-16 rounded-full bg-gold/20 blur-2xl"
+                  aria-hidden="true"
+                />
               </div>
             </Reveal>
-
           </div>
         </div>
       </section>

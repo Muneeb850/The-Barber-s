@@ -19,7 +19,8 @@ export const Route = createFileRoute("/services")({
       { property: "og:title", content: `Services & Pricing | ${BUSINESS.name}` },
       {
         property: "og:description",
-        content: "Cuts, shaves and combo rituals with transparent pricing and durations in Honolulu, HI.",
+        content:
+          "Cuts, shaves and combo rituals with transparent pricing and durations in Honolulu, HI.",
       },
     ],
   }),
@@ -43,7 +44,10 @@ function Services() {
           <Reveal variant="scale-up">
             <div className="rounded-sm border border-gold/40 bg-gradient-to-r from-card via-card/80 to-card p-6 md:p-8 shadow-[var(--shadow-soft)] relative overflow-hidden">
               {/* Decorative glow */}
-              <div className="pointer-events-none absolute -top-10 right-10 size-48 rounded-full bg-gold/8 blur-3xl" aria-hidden="true" />
+              <div
+                className="pointer-events-none absolute -top-10 right-10 size-48 rounded-full bg-gold/8 blur-3xl"
+                aria-hidden="true"
+              />
               <p className="eyebrow text-gold mb-4">Special Discounts</p>
               <div className="flex flex-col sm:flex-row gap-6">
                 {/* Military */}
@@ -54,12 +58,16 @@ function Services() {
                   <div>
                     <p className="font-serif text-xl text-foreground">Military Personnel</p>
                     <p className="mt-0.5 text-sm text-muted-foreground">
-                      <span className="text-gold font-semibold">$3 off</span> any service — valid ID required
+                      <span className="text-gold font-semibold">$3 off</span> any service — valid ID
+                      required
                     </p>
                   </div>
                 </div>
                 {/* Divider */}
-                <div className="hidden sm:block w-px bg-border/80 self-stretch" aria-hidden="true" />
+                <div
+                  className="hidden sm:block w-px bg-border/80 self-stretch"
+                  aria-hidden="true"
+                />
                 <div className="block sm:hidden h-px bg-border/80 w-full" aria-hidden="true" />
                 {/* Seniors */}
                 <div className="flex items-center gap-4 flex-1">
@@ -69,7 +77,8 @@ function Services() {
                   <div>
                     <p className="font-serif text-xl text-foreground">Senior Citizens</p>
                     <p className="mt-0.5 text-sm text-muted-foreground">
-                      <span className="text-gold font-semibold">$3 off</span> any service — 65 years &amp; older
+                      <span className="text-gold font-semibold">$3 off</span> any service — 65 years
+                      &amp; older
                     </p>
                   </div>
                 </div>
@@ -90,7 +99,7 @@ function Services() {
                 delay={(i % 2) * 0.08}
                 className="lux-card lux-card-hover flex flex-col p-8 rounded-sm gold-glow-hover"
               >
-                {(s.tag || s.subtitle) ? (
+                {s.tag || s.subtitle ? (
                   <div className="flex flex-wrap gap-2 mb-4">
                     <span className="inline-flex w-fit border border-gold/50 px-3 py-1 text-[0.6rem] tracking-[0.24em] text-gold uppercase font-medium">
                       {s.tag || s.subtitle}
