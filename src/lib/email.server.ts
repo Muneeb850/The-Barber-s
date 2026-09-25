@@ -305,7 +305,7 @@ export async function sendBookingEmails(payload: BookingEmailPayload): Promise<{
   const fromEmail =
     process.env.RESEND_FROM_EMAIL ||
     (typeof import.meta !== "undefined" && import.meta.env?.VITE_RESEND_FROM_EMAIL) ||
-    "Tom's Barber <onboarding@resend.dev>";
+    "Tom's Barber <appointments@tomsbarber.website>";
 
   const ownerEmail =
     process.env.SHOP_OWNER_EMAIL ||
