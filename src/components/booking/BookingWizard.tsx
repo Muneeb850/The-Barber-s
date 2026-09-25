@@ -199,7 +199,9 @@ export function BookingWizard() {
           data: {
             serviceId: service.id,
             serviceName: service.name,
+            price: service.price,
             servicePrice: service.price,
+            duration: service.duration,
             serviceDuration: service.duration,
             barberId: ANY_BARBER.id,
             barberName: ANY_BARBER.name,
@@ -213,7 +215,8 @@ export function BookingWizard() {
         });
         setReference(res.reference);
         go(4);
-      } catch {
+      } catch (err) {
+        console.error("Booking error:", err);
         const randomRef = `TB-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
         setReference(randomRef);
         go(4);

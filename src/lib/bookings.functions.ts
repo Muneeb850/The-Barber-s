@@ -1,20 +1,28 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 
-const bookingSchema = z.object({
-  serviceId: z.string().min(1).max(60),
-  serviceName: z.string().min(1).max(120),
-  price: z.number().int().min(0).max(10000),
-  duration: z.number().int().min(5).max(600),
-  barberId: z.string().min(1).max(60),
-  barberName: z.string().min(1).max(120),
-  date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
-  time: z.string().min(3).max(20),
-  name: z.string().trim().min(2).max(100),
-  phone: z.string().trim().min(7).max(25),
-  email: z.string().trim().email().max(255),
-  notes: z.string().trim().max(700).optional().default(""),
-});
+const bookingSchema = z
+  .object({
+    serviceId: z.string().min(1).max(60),
+    serviceName: z.string().min(1).max(120),
+    price: z.number().int().min(0).max(10000).optional(),
+    servicePrice: z.number().int().min(0).max(10000).optional(),
+    duration: z.number().int().min(5).max(600).optional(),
+    serviceDuration: z.number().int().min(5).max(600).optional(),
+    barberId: z.string().min(1).max(60),
+    barberName: z.string().min(1).max(120),
+    date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+    time: z.string().min(3).max(20),
+    name: z.string().trim().min(2).max(100),
+    phone: z.string().trim().min(7).max(25),
+    email: z.string().trim().email().max(255),
+    notes: z.string().trim().max(700).optional().default(""),
+  })
+  .transform((data) => ({
+    ...data,
+    price: data.price ?? data.servicePrice ?? 35,
+    duration: data.duration ?? data.serviceDuration ?? 30,
+  }));
 
 export type BookingInput = z.infer<typeof bookingSchema>;
 
