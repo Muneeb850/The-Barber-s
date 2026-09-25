@@ -310,7 +310,7 @@ export async function sendBookingEmails(payload: BookingEmailPayload): Promise<{
   const ownerEmail =
     process.env.SHOP_OWNER_EMAIL ||
     (typeof import.meta !== "undefined" && import.meta.env?.VITE_SHOP_OWNER_EMAIL) ||
-    "owner@tomsbarber.com";
+    "thetxtbarbersone@gmail.com";
 
   try {
     const [customerRes, ownerRes] = await Promise.allSettled([
