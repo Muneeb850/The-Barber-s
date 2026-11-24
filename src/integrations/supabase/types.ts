@@ -65,6 +65,141 @@ export type Database = {
         };
         Relationships: [];
       };
+      admin_users: {
+        Row: { user_id: string; created_at: string };
+        Insert: { user_id: string; created_at?: string };
+        Update: { user_id?: string; created_at?: string };
+        Relationships: [];
+      };
+      site_settings: {
+        Row: { key: string; value: Json; updated_at: string };
+        Insert: { key: string; value: Json; updated_at?: string };
+        Update: { key?: string; value?: Json; updated_at?: string };
+        Relationships: [];
+      };
+      services: {
+        Row: {
+          id: string;
+          name: string;
+          description: string;
+          price: number;
+          duration: number;
+          category: string;
+          subtitle: string;
+          tag: string;
+          sort_order: number;
+          is_active: boolean;
+          updated_at: string;
+        };
+        Insert: {
+          id: string;
+          name: string;
+          description?: string;
+          price: number;
+          duration: number;
+          category?: string;
+          subtitle?: string;
+          tag?: string;
+          sort_order?: number;
+          is_active?: boolean;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          name?: string;
+          description?: string;
+          price?: number;
+          duration?: number;
+          category?: string;
+          subtitle?: string;
+          tag?: string;
+          sort_order?: number;
+          is_active?: boolean;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
+      gallery_images: {
+        Row: {
+          id: string;
+          src: string;
+          alt: string;
+          span: string;
+          storage_path: string | null;
+          sort_order: number;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          src: string;
+          alt?: string;
+          span?: string;
+          storage_path?: string | null;
+          sort_order?: number;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          src?: string;
+          alt?: string;
+          span?: string;
+          storage_path?: string | null;
+          sort_order?: number;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
+      testimonials: {
+        Row: {
+          id: string;
+          name: string;
+          rating: number;
+          quote: string;
+          sort_order: number;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          name: string;
+          rating?: number;
+          quote: string;
+          sort_order?: number;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          name?: string;
+          rating?: number;
+          quote?: string;
+          sort_order?: number;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
+      faqs: {
+        Row: {
+          id: string;
+          question: string;
+          answer: string;
+          sort_order: number;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          question: string;
+          answer: string;
+          sort_order?: number;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          question?: string;
+          answer?: string;
+          sort_order?: number;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
     };
     Views: {
       [_ in never]: never;
@@ -76,6 +211,10 @@ export type Database = {
           barber_id: string;
           booking_time: string;
         }[];
+      };
+      is_admin: {
+        Args: Record<PropertyKey, never>;
+        Returns: boolean;
       };
     };
     Enums: {

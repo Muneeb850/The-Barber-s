@@ -4,7 +4,7 @@ import { X, ChevronLeft, ChevronRight } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { PageHeader } from "@/components/PageHeader";
 import { GalleryReveal, LUXURY_EASE } from "@/components/Reveal";
-import { GALLERY } from "@/lib/site-data";
+import { useSiteContent } from "@/components/SiteContentContext";
 
 export const Route = createFileRoute("/gallery")({
   head: () => ({
@@ -27,6 +27,7 @@ export const Route = createFileRoute("/gallery")({
 });
 
 function GalleryPage() {
+  const { gallery: GALLERY } = useSiteContent();
   const [index, setIndex] = useState<number | null>(null);
   const reduce = useReducedMotion();
 
@@ -34,7 +35,7 @@ function GalleryPage() {
   const step = useCallback(
     (dir: number) =>
       setIndex((i) => (i === null ? i : (i + dir + GALLERY.length) % GALLERY.length)),
-    [],
+    [GALLERY.length],
   );
 
   useEffect(() => {
@@ -65,7 +66,7 @@ function GalleryPage() {
           <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {GALLERY.map((g, i) => (
               <GalleryReveal
-                key={g.alt}
+                key={g.id}
                 index={i}
                 className={g.span === "tall" ? "sm:row-span-2" : ""}
               >
@@ -98,7 +99,7 @@ function GalleryPage() {
       </section>
 
       <AnimatePresence>
-        {index !== null ? (
+        {index !== null && GALLERY[index] ? (
           <motion.div
             role="dialog"
             aria-modal="true"

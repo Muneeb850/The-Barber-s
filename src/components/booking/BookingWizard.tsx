@@ -23,7 +23,10 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { GoldButton } from "@/components/ui/GoldButton";
 import { useBooking, type LocationId } from "@/components/booking/BookingContext";
-import { ANY_BARBER, BARBERS, SERVICES, TIME_SLOTS, LOCATIONS } from "@/lib/site-data";
+import { toast } from "sonner";
+import { ANY_BARBER, BARBERS } from "@/lib/site-data";
+import { useActiveServices, useSiteContent } from "@/components/SiteContentContext";
+import { fullAddress, isDateClosed, slotsForDate } from "@/lib/site-content";
 import { createBooking, getBookedSlots } from "@/lib/bookings.functions";
 import { cn } from "@/lib/utils";
 
@@ -37,23 +40,14 @@ type DiscountType = null | "military" | "senior";
 const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 const phoneRe = /^[0-9+()\-.\s]{7,25}$/;
 
-// Helper to convert time string (e.g. "9:00 AM" or "6:00 PM HST") to minutes from midnight
-function timeToMinutes(timeStr: string): number {
-  const clean = timeStr.replace(/[A-Z]{3,}$/i, "").trim();
-  const match = clean.match(/^(\d+):(\d+)\s*(AM|PM)$/i);
-  if (!match) return 0;
-  let hours = parseInt(match[1], 10);
-  const minutes = parseInt(match[2], 10);
-  const ampm = match[3].toUpperCase();
-  if (ampm === "PM" && hours < 12) hours += 12;
-  if (ampm === "AM" && hours === 12) hours = 0;
-  return hours * 60 + minutes;
-}
-
 export function BookingWizard() {
   const { open, closeBooking, presetServiceId } = useBooking();
   const reduce = useReducedMotion();
   const contentRef = useRef<HTMLDivElement>(null);
+  const siteContent = useSiteContent();
+  const SERVICES = useActiveServices();
+  const BUSINESS = siteContent.business;
+  const address = fullAddress(BUSINESS);
 
   const [step, setStep] = useState(0);
   const [direction, setDirection] = useState(1);
@@ -108,28 +102,11 @@ export function BookingWizard() {
     );
   }, [taken, barberId, date]);
 
-  // Retrieve closing time on the chosen date
-  const closingTimeMinutes = useMemo(() => {
-    if (!date) return 1440;
-    const loc = LOCATIONS[0];
-    const dayName = format(date, "EEEE");
-    const dayHours = loc.hours.find((h) => h.day === dayName);
-    if (!dayHours || dayHours.hours.toLowerCase().includes("closed")) return 0;
-
-    const parts = dayHours.hours.split("–");
-    if (parts.length < 2) return 1440;
-    return timeToMinutes(parts[1]);
-  }, [date]);
-
-  // Filter time slots dynamically so service fits within operating hours
+  // Bookable times come from the hours Tom sets in the admin dashboard.
   const filteredTimeSlots = useMemo(() => {
-    if (!date) return TIME_SLOTS;
-    const duration = service?.duration || 30;
-    return TIME_SLOTS.filter((slotStr) => {
-      const slotStart = timeToMinutes(slotStr);
-      return slotStart + duration <= closingTimeMinutes;
-    });
-  }, [date, service, closingTimeMinutes]);
+    if (!date) return [];
+    return slotsForDate(siteContent, format(date, "yyyy-MM-dd"), service?.duration || 30);
+  }, [date, service, siteContent]);
 
   function reset() {
     setStep(0);
@@ -216,10 +193,13 @@ export function BookingWizard() {
         setReference(res.reference);
         go(4);
       } catch (err) {
+        // Do NOT show a fake confirmation — the booking was not saved.
         console.error("Booking error:", err);
-        const randomRef = `TB-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
-        setReference(randomRef);
-        go(4);
+        const message =
+          err instanceof Error && err.message
+            ? err.message
+            : "We couldn't save your booking. Please try again or call the shop.";
+        toast.error(message, { description: `Need help? Call ${BUSINESS.phone}` });
       } finally {
         setSubmitting(false);
       }
@@ -238,13 +218,13 @@ export function BookingWizard() {
 
   const googleCalendarUrl = useMemo(() => {
     if (!date || !time || !service) return null;
-    const title = encodeURIComponent(`Haircut Appointment: ${service.name} at Tom's Barber`);
+    const title = encodeURIComponent(`Haircut Appointment: ${service.name} at ${BUSINESS.name}`);
     const detailsText = encodeURIComponent(
-      `Appointment at Tom's Barber\nService: ${service.name}\nBarber: ${barber?.name || "Any"}\nBooking Ref: ${reference || ""}\nLocation: 1430 Kona St #105, Honolulu, HI 96814`,
+      `Appointment at ${BUSINESS.name}\nService: ${service.name}\nBarber: ${barber?.name || "Any"}\nBooking Ref: ${reference || ""}\nLocation: ${address}`,
     );
-    const locText = encodeURIComponent("1430 Kona St #105, Honolulu, HI 96814");
+    const locText = encodeURIComponent(address);
     return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&details=${detailsText}&location=${locText}`;
-  }, [date, time, service, barber, reference]);
+  }, [date, time, service, barber, reference, BUSINESS.name, address]);
 
   const variants = {
     enter: (d: number) =>
@@ -314,7 +294,20 @@ export function BookingWizard() {
               exit="exit"
               transition={{ duration: 0.35, ease: [0.22, 0.61, 0.36, 1] }}
             >
-              {step === 0 ? (
+              {!siteContent.booking.enabled && step < 4 ? (
+                <div className="rounded-xl border border-dashed border-border p-8 text-center bg-secondary/20">
+                  <p className="font-serif text-xl">Online booking is paused</p>
+                  <p className="mt-2 text-sm text-muted-foreground">
+                    Please call us to book:{" "}
+                    <a
+                      href={`tel:${BUSINESS.phone.replace(/[^0-9+]/g, "")}`}
+                      className="text-gold font-medium"
+                    >
+                      {BUSINESS.phone}
+                    </a>
+                  </p>
+                </div>
+              ) : step === 0 ? (
                 <div>
                   <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground mb-3">
                     Select a Service
@@ -369,11 +362,13 @@ export function BookingWizard() {
                           setDate(d);
                           setTime(null);
                         }}
-                        disabled={(d) => d < startOfToday()}
+                        disabled={(d) =>
+                          d < startOfToday() || isDateClosed(siteContent, format(d, "yyyy-MM-dd"))
+                        }
                         className="pointer-events-auto rounded-xl border border-border p-3 shadow-xs bg-card/60"
                       />
                       <p className="mt-2 text-[0.68rem] text-muted-foreground">
-                        Open 7 Days a Week
+                        Greyed-out days are closed
                       </p>
                     </div>
                     <div>
@@ -385,7 +380,18 @@ export function BookingWizard() {
                           </span>
                         )}
                       </p>
-                      {date ? (
+                      {date && filteredTimeSlots.length === 0 ? (
+                        <div className="mt-3 rounded-xl border border-dashed border-border p-6 text-center text-sm text-muted-foreground bg-secondary/20">
+                          No times left on this day. Please pick another date or call{" "}
+                          <a
+                            href={`tel:${BUSINESS.phone.replace(/[^\d+]/g, "")}`}
+                            className="text-gold"
+                          >
+                            {BUSINESS.phone}
+                          </a>
+                          .
+                        </div>
+                      ) : date ? (
                         <ul className="mt-3 grid grid-cols-3 gap-2 max-h-[260px] overflow-y-auto pr-1">
                           {filteredTimeSlots.map((t) => {
                             const disabled = unavailable.has(t);
@@ -545,7 +551,7 @@ export function BookingWizard() {
                   <div className="rounded-xl border border-border p-4 bg-secondary/15 space-y-3">
                     <Row
                       label="Location"
-                      value="Tom's Barber — 1430 Kona St #105, Honolulu, HI 96814"
+                      value={`${BUSINESS.name} — ${address}`}
                       onEdit={() => {}}
                     />
                     <Row
@@ -644,7 +650,7 @@ export function BookingWizard() {
                         <MapPin className="size-3.5 text-gold" /> Location
                       </span>
                       <span className="font-medium text-foreground">
-                        1430 Kona St #105, Honolulu
+                        {BUSINESS.street}, {BUSINESS.city}
                       </span>
                     </div>
                     <div className="flex items-center justify-between border-b border-border/50 pb-2">

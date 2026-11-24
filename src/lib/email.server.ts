@@ -15,9 +15,8 @@ export interface BookingEmailPayload {
 }
 
 function getResendClient(): Resend | null {
-  const apiKey =
-    process.env.RESEND_API_KEY ||
-    (typeof import.meta !== "undefined" && import.meta.env?.VITE_RESEND_API_KEY);
+  // Server-only secret. Never read a VITE_* variant — those get bundled into the browser.
+  const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey || apiKey === "re_123456789_placeholder") {
     return null;
   }

@@ -3,15 +3,15 @@ import barber2 from "@/assets/barber-2.jpg";
 import barber3 from "@/assets/barber-3.jpg";
 import barber4 from "@/assets/barber-4.jpg";
 
-import realFadeCut from "@/assets/real-fade-cut.jpg";
-import realLadiesService from "@/assets/real-ladies-service.jpg";
-import realExterior from "@/assets/real-exterior.jpg";
-import realBackCut from "@/assets/real-back-cut.jpg";
-import realInterior from "@/assets/real-interior.jpg";
-import realInterior2 from "@/assets/real-interior-2.jpg";
-import realFadeCut2 from "@/assets/real-fade-cut-2.jpg";
-import realHaircutAction from "@/assets/real-haircut-action.jpg";
-import realShopExterior from "@/assets/real-shop-exterior.jpg";
+const realFadeCut = "/images/real-fade-cut.jpg";
+const realLadiesService = "/images/real-ladies-service.jpg";
+const realExterior = "/images/real-exterior.jpg";
+const realBackCut = "/images/real-back-cut.jpg";
+const realInterior = "/images/real-interior.jpg";
+const realInterior2 = "/images/real-interior-2.jpg";
+const realFadeCut2 = "/images/real-fade-cut-2.jpg";
+const realHaircutAction = "/images/real-haircut-action.jpg";
+const realShopExterior = "/images/real-shop-exterior.jpg";
 
 export const BUSINESS = {
   name: "Tom's Barber",

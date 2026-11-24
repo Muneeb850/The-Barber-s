@@ -1,10 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHeader } from "@/components/PageHeader";
 import { Reveal, SectionHeading, ImageMaskReveal } from "@/components/Reveal";
-import { BUSINESS } from "@/lib/site-data";
-import realInterior from "@/assets/real-interior.jpg";
-import realFadeCut from "@/assets/real-fade-cut.jpg";
-import realLadiesService from "@/assets/real-ladies-service.jpg";
+import { useSiteContent } from "@/components/SiteContentContext";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -41,6 +38,7 @@ const VALUES = [
 ];
 
 function About() {
+  const { business: BUSINESS, pageImages: img } = useSiteContent();
   return (
     <>
       <PageHeader
@@ -53,8 +51,8 @@ function About() {
       <section className="py-24 md:py-32 overflow-hidden">
         <div className="mx-auto grid max-w-7xl items-center gap-14 px-5 md:grid-cols-2 md:px-8">
           <ImageMaskReveal
-            src={realInterior}
-            alt="Tom's Barber barbershop — barbers working on clients at Kona Street Honolulu"
+            src={img.aboutStory.src}
+            alt={img.aboutStory.alt}
             width={1600}
             height={1100}
             className="shadow-[var(--shadow-soft)] rounded-sm border border-border/80"
@@ -76,8 +74,8 @@ function About() {
               collaboration and every service is given the dedicated time it deserves.
             </p>
             <p className="mt-4 text-base leading-relaxed text-muted-foreground">
-              Located at 1430 Kona St in Honolulu, our lounge brings together master barbers
-              selected for their razor precision, contemporary styling, and genuine island
+              Located at {BUSINESS.street} in {BUSINESS.city}, our lounge brings together master
+              barbers selected for their razor precision, contemporary styling, and genuine island
               hospitality.
             </p>
           </Reveal>
@@ -116,8 +114,8 @@ function About() {
           <SectionHeading eyebrow="Inside the lounge" title="Comfort, style and precision" />
           <div className="mt-14 grid gap-6 md:grid-cols-2">
             <ImageMaskReveal
-              src={realFadeCut}
-              alt="Curly skin fade — fresh from the chair at Tom's Barber Honolulu"
+              src={img.aboutInside1.src}
+              alt={img.aboutInside1.alt}
               width={1200}
               height={900}
               delay={0.1}
@@ -125,8 +123,8 @@ function About() {
               imgClassName="h-[420px]"
             />
             <ImageMaskReveal
-              src={realLadiesService}
-              alt="Expert stylist performing ladies curl styling service"
+              src={img.aboutInside2.src}
+              alt={img.aboutInside2.alt}
               width={1200}
               height={1200}
               delay={0.25}

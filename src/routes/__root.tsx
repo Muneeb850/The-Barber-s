@@ -21,6 +21,8 @@ import { BookingWizard } from "@/components/booking/BookingWizard";
 import { FloatingBookButton } from "@/components/FloatingBookButton";
 import { AvailabilityTicker } from "@/components/sections/AvailabilityTicker";
 import { Toaster } from "@/components/ui/sonner";
+import { SiteContentProvider } from "@/components/SiteContentContext";
+import { getSiteContent } from "@/lib/content.functions";
 
 function NotFoundComponent() {
   return (
@@ -83,6 +85,10 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
 }
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
+  // Editable content (hours, services, gallery, …) — refreshed every minute or
+  // immediately after an admin save (router.invalidate()).
+  loader: () => getSiteContent(),
+  staleTime: 60_000,
   head: () => ({
     meta: [
       { charSet: "utf-8" },
@@ -156,25 +162,37 @@ function PageTransitionWrapper({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const content = Route.useLoaderData();
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const isAdmin = pathname === "/admin" || pathname.startsWith("/admin/");
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider>
-        <BookingProvider>
-          <AvailabilityTicker />
-          <SiteNav />
-          <main>
-            {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-            <PageTransitionWrapper>
+      <SiteContentProvider value={content}>
+        <ThemeProvider>
+          <BookingProvider>
+            {isAdmin ? (
+              // Admin dashboard has its own chrome — no public nav/footer/booking widgets.
               <Outlet />
-            </PageTransitionWrapper>
-          </main>
-          <SiteFooter />
-          <FloatingBookButton />
-          <BookingWizard />
-          <Toaster position="bottom-center" />
-        </BookingProvider>
-      </ThemeProvider>
+            ) : (
+              <>
+                <AvailabilityTicker />
+                <SiteNav />
+                <main>
+                  {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+                  <PageTransitionWrapper>
+                    <Outlet />
+                  </PageTransitionWrapper>
+                </main>
+                <SiteFooter />
+                <FloatingBookButton />
+                <BookingWizard />
+              </>
+            )}
+            <Toaster position={isAdmin ? "top-right" : "bottom-center"} />
+          </BookingProvider>
+        </ThemeProvider>
+      </SiteContentProvider>
     </QueryClientProvider>
   );
 }

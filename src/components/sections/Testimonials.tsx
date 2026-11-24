@@ -1,10 +1,13 @@
 import { motion } from "framer-motion";
 import { Star } from "lucide-react";
 import { SectionHeading } from "@/components/Reveal";
-import { TESTIMONIALS } from "@/lib/site-data";
+import { useSiteContent } from "@/components/SiteContentContext";
+import { initialsOf } from "@/lib/site-content";
 
 export function Testimonials() {
-  const loop = [...TESTIMONIALS, ...TESTIMONIALS];
+  const { testimonials } = useSiteContent();
+  if (testimonials.length === 0) return null;
+  const loop = [...testimonials, ...testimonials];
 
   return (
     <section className="overflow-hidden py-24 md:py-32">
@@ -31,12 +34,12 @@ export function Testimonials() {
         >
           {loop.map((t, i) => (
             <li
-              key={`${t.name}-${i}`}
+              key={`${t.id}-${i}`}
               className="lux-card lux-card-hover w-[19rem] shrink-0 p-7 sm:w-[23rem]"
             >
               <div className="flex items-center gap-3">
                 <span className="grid size-11 shrink-0 place-items-center rounded-full bg-sand font-serif text-sm text-espresso">
-                  {t.initials}
+                  {initialsOf(t.name)}
                 </span>
                 <div className="min-w-0">
                   <p className="truncate font-serif text-lg">{t.name}</p>

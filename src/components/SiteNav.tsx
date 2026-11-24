@@ -4,7 +4,8 @@ import { Menu, X, MapPin } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useBooking } from "@/components/booking/BookingContext";
 import { GoldButton } from "@/components/ui/GoldButton";
-import { BUSINESS, LOCATIONS } from "@/lib/site-data";
+import { useSiteContent } from "@/components/SiteContentContext";
+import { fullAddress } from "@/lib/site-content";
 import logo from "@/assets/logo.png";
 
 const LINKS = [
@@ -18,6 +19,7 @@ const LINKS = [
 const LUXURY_EASE = [0.22, 0.61, 0.36, 1] as const;
 
 export function SiteNav() {
+  const { business: BUSINESS } = useSiteContent();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const { openBooking } = useBooking();
@@ -147,7 +149,7 @@ export function SiteNav() {
               <ul className="space-y-1 px-6 py-5">
                 <li className="pb-2 mb-2 border-b border-border/60 flex items-center gap-2 text-xs text-muted-foreground">
                   <MapPin className="size-3.5 text-gold" />
-                  <span>{LOCATIONS[0].address}</span>
+                  <span>{fullAddress(BUSINESS)}</span>
                 </li>
                 {LINKS.map((l) => (
                   <li key={l.to}>

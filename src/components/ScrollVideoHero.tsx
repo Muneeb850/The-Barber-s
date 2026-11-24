@@ -2,13 +2,14 @@ import { motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import { useBooking } from "@/components/booking/BookingContext";
 import { GoldButton } from "@/components/ui/GoldButton";
-import { LOCATIONS, BUSINESS } from "@/lib/site-data";
+import { useSiteContent } from "@/components/SiteContentContext";
 
 export const HERO_VIDEO_SRC = "/hero-haircut.mp4";
 
 export function ScrollVideoHero() {
   const { openBooking } = useBooking();
-  const activeLoc = LOCATIONS[0];
+  const { business: BUSINESS } = useSiteContent();
+  const activeLoc = BUSINESS;
 
   return (
     <section

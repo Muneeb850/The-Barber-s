@@ -1,5 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
+import { ANY_BARBER, BARBERS } from "@/lib/site-data";
+import { isDateClosed, shopNow, slotsForDate } from "@/lib/site-content";
 
 const bookingSchema = z
   .object({
@@ -38,18 +40,61 @@ function makeReference() {
 export const createBooking = createServerFn({ method: "POST" })
   .validator((data: unknown) => bookingSchema.parse(data))
   .handler(async ({ data }) => {
-    const reference = makeReference();
+    // Live content (services, hours, closed dates) as set in the admin dashboard.
+    const { loadSiteContent } = await import("@/lib/content.server");
+    const content = await loadSiteContent();
 
-    try {
-      const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    if (!content.booking.enabled) {
+      throw new Error(`Online booking is paused. Please call us at ${content.business.phone}.`);
+    }
+
+    // Never trust price/duration/name from the browser — resolve the service on the server.
+    const service = content.services.find((s) => s.id === data.serviceId && s.isActive);
+    if (!service) throw new Error("Selected service is no longer available.");
+
+    const barber =
+      data.barberId === ANY_BARBER.id ? ANY_BARBER : BARBERS.find((b) => b.id === data.barberId);
+    if (!barber) throw new Error("Selected barber is no longer available.");
+
+    // Reject past dates, closed days, and times outside opening hours (shop runs on HST).
+    if (data.date < shopNow().date) {
+      throw new Error("Please choose a date that is not in the past.");
+    }
+    if (isDateClosed(content, data.date)) {
+      throw new Error("We're closed on that day. Please pick another date.");
+    }
+    if (!slotsForDate(content, data.date, service.duration).includes(data.time)) {
+      throw new Error("That time isn't available. Please pick another time.");
+    }
+
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+
+    // Server-side double-booking guard (mirrors the slot filter in the wizard).
+    const { data: taken, error: slotError } = await supabaseAdmin.rpc("get_booked_slots", {
+      _date: data.date,
+    });
+    if (slotError) {
+      console.error("[Booking] Could not check slot availability:", slotError.message);
+      throw new Error("We couldn't save your booking. Please try again or call the shop.");
+    }
+    const clash = (taken ?? []).some(
+      (r) =>
+        r.booking_time === data.time &&
+        (barber.id === ANY_BARBER.id || r.barber_id === barber.id || r.barber_id === ANY_BARBER.id),
+    );
+    if (clash) throw new Error("That time slot was just booked. Please pick another time.");
+
+    let reference = "";
+    for (let attempt = 0; attempt < 3; attempt += 1) {
+      reference = makeReference();
       const { error } = await supabaseAdmin.from("bookings").insert({
         reference,
-        service_id: data.serviceId,
-        service_name: data.serviceName,
-        price_cents: data.price * 100,
-        duration_minutes: data.duration,
-        barber_id: data.barberId,
-        barber_name: data.barberName,
+        service_id: service.id,
+        service_name: service.name,
+        price_cents: service.price * 100,
+        duration_minutes: service.duration,
+        barber_id: barber.id,
+        barber_name: barber.name,
         booking_date: data.date,
         booking_time: data.time,
         customer_name: data.name,
@@ -57,16 +102,11 @@ export const createBooking = createServerFn({ method: "POST" })
         customer_email: data.email,
         notes: data.notes || null,
       });
-
-      if (error) {
-        console.warn(
-          "[Booking] Supabase insert warning (proceeding with confirmation):",
-          error.message,
-        );
-      }
-    } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : String(err);
-      console.warn("[Booking] Supabase client error (proceeding with confirmation):", msg);
+      if (!error) break;
+      // 23505 = unique violation on reference → retry with a new one.
+      if (error.code === "23505" && attempt < 2) continue;
+      console.error("[Booking] Supabase insert failed:", error.message);
+      throw new Error("We couldn't save your booking. Please try again or call the shop.");
     }
 
     // Trigger instant Resend email notifications (Customer Confirmation + Shop Owner Notification)
@@ -74,10 +114,10 @@ export const createBooking = createServerFn({ method: "POST" })
       const { sendBookingEmails } = await import("@/lib/email.server");
       await sendBookingEmails({
         reference,
-        serviceName: data.serviceName,
-        servicePrice: data.price,
-        serviceDuration: data.duration,
-        barberName: data.barberName,
+        serviceName: service.name,
+        servicePrice: service.price,
+        serviceDuration: service.duration,
+        barberName: barber.name,
         date: data.date,
         time: data.time,
         customerName: data.name,

@@ -9,7 +9,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { GoldButton } from "@/components/ui/GoldButton";
 import { useBooking } from "@/components/booking/BookingContext";
-import { BUSINESS, LOCATIONS } from "@/lib/site-data";
+import { useSiteContent } from "@/components/SiteContentContext";
+import { formatDayHours, fullAddress, mapEmbed, mapLink, phoneHref } from "@/lib/site-content";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -36,7 +37,7 @@ function Contact() {
   const { openBooking } = useBooking();
   const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const loc = LOCATIONS[0];
+  const { business: BUSINESS, hours } = useSiteContent();
 
   function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -72,22 +73,22 @@ function Contact() {
               </h3>
               <p className="mt-3 text-sm leading-relaxed text-foreground/90">
                 <a
-                  href={loc.mapLink}
+                  href={mapLink(BUSINESS)}
                   target="_blank"
                   rel="noreferrer noopener"
                   className="hover:underline font-medium"
                 >
-                  {loc.address}
+                  {fullAddress(BUSINESS)}
                 </a>
               </p>
               <p className="mt-6 text-[0.65rem] tracking-[0.2em] text-gold uppercase font-semibold">
                 Operating Hours:
               </p>
               <ul className="mt-3 space-y-1.5 text-xs text-muted-foreground">
-                {loc.hours.map((h) => (
+                {hours.map((h) => (
                   <li key={h.day} className="flex justify-between gap-4">
                     <span>{h.day}</span>
-                    <span className="text-foreground/90 font-medium">{h.hours}</span>
+                    <span className="text-foreground/90 font-medium">{formatDayHours(h)}</span>
                   </li>
                 ))}
               </ul>
@@ -96,7 +97,7 @@ function Contact() {
             <div className="mt-6 flex flex-wrap gap-x-8 gap-y-3 text-sm border-t border-border/60 pt-6">
               <div className="flex items-center gap-2">
                 <Phone className="size-4 text-gold shrink-0" aria-hidden="true" />
-                <a href={BUSINESS.phoneHref} className="hover:text-gold font-medium">
+                <a href={phoneHref(BUSINESS.phone)} className="hover:text-gold font-medium">
                   {BUSINESS.phone}
                 </a>
               </div>
@@ -185,8 +186,8 @@ function Contact() {
             className="mt-12 overflow-hidden border border-border shadow-[var(--shadow-soft)] rounded-sm"
           >
             <iframe
-              title={`Map showing ${BUSINESS.name} at ${loc.address}`}
-              src={loc.mapEmbed}
+              title={`Map showing ${BUSINESS.name} at ${fullAddress(BUSINESS)}`}
+              src={mapEmbed(BUSINESS)}
               className="h-[420px] w-full"
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"

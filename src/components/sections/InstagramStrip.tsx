@@ -1,21 +1,25 @@
 import { Instagram } from "lucide-react";
 import { Reveal, SectionHeading } from "@/components/Reveal";
-import { GALLERY, BUSINESS } from "@/lib/site-data";
+import { useSiteContent } from "@/components/SiteContentContext";
 
 export function InstagramStrip() {
+  const { gallery, business } = useSiteContent();
+  if (gallery.length === 0) return null;
+  const instagram =
+    business.socials.find((s) => s.label.toLowerCase().includes("insta")) ?? business.socials[0];
   return (
     <section className="border-y border-border surface-linen py-24 md:py-32">
       <div className="mx-auto max-w-7xl px-5 md:px-8">
         <SectionHeading
-          eyebrow="@bro502"
+          eyebrow={business.instagramHandle || "Instagram"}
           title="Fresh from the chair"
           intro="A daily look at the cuts leaving our doors."
         />
         <ul className="mt-14 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
-          {GALLERY.map((g, i) => (
-            <Reveal as="li" key={g.alt} delay={i * 0.06}>
+          {gallery.slice(0, 12).map((g, i) => (
+            <Reveal as="li" key={g.id} delay={i * 0.06}>
               <a
-                href={BUSINESS.socials[0].href}
+                href={instagram?.href ?? "#"}
                 target="_blank"
                 rel="noreferrer noopener"
                 className="group relative block aspect-square overflow-hidden"

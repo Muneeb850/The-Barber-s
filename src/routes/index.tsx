@@ -8,11 +8,8 @@ import { InstagramStrip } from "@/components/sections/InstagramStrip";
 import { BeforeAfterSlider } from "@/components/sections/BeforeAfterSlider";
 import { GoldButton } from "@/components/ui/GoldButton";
 import { useBooking } from "@/components/booking/BookingContext";
-import { SERVICES, BUSINESS, LOCATIONS } from "@/lib/site-data";
-import realInterior from "@/assets/real-interior.jpg";
-import realBackCut from "@/assets/real-back-cut.jpg";
-import newBeforeHaircut from "@/assets/new-before-haircut.jpg";
-import newAfterHaircut from "@/assets/new-after-haircut.jpg";
+import { useActiveServices, useSiteContent } from "@/components/SiteContentContext";
+import { formatDayHours, fullAddress, phoneHref } from "@/lib/site-content";
 import barbersShowcaseVideo from "@/assets/barbers-showcase.mp4";
 
 export const Route = createFileRoute("/")({
@@ -55,7 +52,8 @@ const HIGHLIGHTS = [
 
 function Index() {
   const { openBooking } = useBooking();
-  const loc = LOCATIONS[0];
+  const { business: BUSINESS, hours, pageImages: img } = useSiteContent();
+  const SERVICES = useActiveServices();
 
   return (
     <>
@@ -97,8 +95,8 @@ function Index() {
           </Reveal>
 
           <ImageMaskReveal
-            src={realInterior}
-            alt="Tom's Barber barbershop interior — barbers at work on multiple chairs"
+            src={img.homeIntro.src}
+            alt={img.homeIntro.alt}
             width={1600}
             height={1100}
             delay={0.15}
@@ -180,12 +178,12 @@ function Index() {
           />
           <Reveal delay={0.15} className="mt-10 max-w-4xl mx-auto">
             <BeforeAfterSlider
-              beforeSrc={newBeforeHaircut}
-              afterSrc={newAfterHaircut}
+              beforeSrc={img.homeBefore.src}
+              afterSrc={img.homeAfter.src}
               aspectRatio="1/1"
               objectFit="cover"
-              beforeAlt="Long overgrown hair — before visit to Tom's Barber"
-              afterAlt="Clean skin fade haircut — after Tom's Barber Honolulu"
+              beforeAlt={img.homeBefore.alt}
+              afterAlt={img.homeAfter.alt}
             />
           </Reveal>
         </div>
@@ -299,10 +297,10 @@ function Index() {
             </div>
 
             <ul className="mt-8 divide-y divide-border">
-              {loc.hours.map((h) => (
+              {hours.map((h) => (
                 <li key={h.day} className="flex justify-between gap-4 py-3 text-sm">
                   <span className="text-muted-foreground">{h.day}</span>
-                  <span className="font-medium text-foreground">{h.hours}</span>
+                  <span className="font-medium text-foreground">{formatDayHours(h)}</span>
                 </li>
               ))}
             </ul>
@@ -314,9 +312,9 @@ function Index() {
               Reserve your appointment in Honolulu
             </h2>
             <p className="mt-5 text-sm leading-relaxed text-muted-foreground">
-              {loc.address}
+              {fullAddress(BUSINESS)}
               <br />
-              <a href={BUSINESS.phoneHref} className="text-gold hover:underline font-medium">
+              <a href={phoneHref(BUSINESS.phone)} className="text-gold hover:underline font-medium">
                 {BUSINESS.phone}
               </a>
             </p>

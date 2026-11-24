@@ -1,10 +1,11 @@
 import { Link } from "@tanstack/react-router";
 import { MapPin, Phone, Mail, Clock } from "lucide-react";
-import { BUSINESS, LOCATIONS } from "@/lib/site-data";
+import { useSiteContent } from "@/components/SiteContentContext";
+import { formatDayHours, fullAddress, mapLink, phoneHref } from "@/lib/site-content";
 import logo from "@/assets/logo.png";
 
 export function SiteFooter() {
-  const loc = LOCATIONS[0];
+  const { business: BUSINESS, hours } = useSiteContent();
 
   return (
     <footer className="border-t border-border surface-linen">
@@ -24,7 +25,10 @@ export function SiteFooter() {
           <ul className="mt-6 space-y-2.5 text-xs text-muted-foreground">
             <li className="flex gap-2">
               <Phone className="size-4 shrink-0 text-gold" aria-hidden="true" />
-              <a href={BUSINESS.phoneHref} className="hover:text-foreground transition-colors">
+              <a
+                href={phoneHref(BUSINESS.phone)}
+                className="hover:text-foreground transition-colors"
+              >
                 {BUSINESS.phone}
               </a>
             </li>
@@ -78,12 +82,12 @@ export function SiteFooter() {
             <li className="flex gap-2">
               <MapPin className="size-4 shrink-0 text-gold" aria-hidden="true" />
               <a
-                href={loc.mapLink}
+                href={mapLink(BUSINESS)}
                 target="_blank"
                 rel="noreferrer noopener"
                 className="hover:text-foreground leading-relaxed transition-colors"
               >
-                {loc.address}
+                {fullAddress(BUSINESS)}
               </a>
             </li>
             <li>
@@ -96,10 +100,10 @@ export function SiteFooter() {
                 </span>
               </div>
               <ul className="mt-2 space-y-1.5">
-                {loc.hours.map((h) => (
+                {hours.map((h) => (
                   <li key={h.day} className="flex justify-between gap-4">
                     <span>{h.day}</span>
-                    <span className="text-foreground/90 font-medium">{h.hours}</span>
+                    <span className="text-foreground/90 font-medium">{formatDayHours(h)}</span>
                   </li>
                 ))}
               </ul>

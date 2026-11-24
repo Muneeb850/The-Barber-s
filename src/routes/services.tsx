@@ -5,7 +5,8 @@ import { Reveal } from "@/components/Reveal";
 import { Faq } from "@/components/sections/Faq";
 import { GoldButton } from "@/components/ui/GoldButton";
 import { useBooking } from "@/components/booking/BookingContext";
-import { SERVICES, BUSINESS } from "@/lib/site-data";
+import { BUSINESS } from "@/lib/site-data";
+import { useActiveServices } from "@/components/SiteContentContext";
 
 export const Route = createFileRoute("/services")({
   head: () => ({
@@ -28,6 +29,7 @@ export const Route = createFileRoute("/services")({
 });
 
 function Services() {
+  const SERVICES = useActiveServices();
   const { openBooking } = useBooking();
 
   return (
